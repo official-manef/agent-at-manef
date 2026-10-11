@@ -1,12 +1,12 @@
 <div align="center">
 
-# Agent SSOT
+# Agent@Manef
 
 ### One source of truth. Many agent platforms. Recoverable context.
 
 Define agents once. Audit existing setups. Reconcile drift. Back up curated knowledge. Move to another platform without rebuilding your operating context.
 
-[![CI](https://github.com/rahmanef63/agent-ssot/actions/workflows/ci.yml/badge.svg)](https://github.com/rahmanef63/agent-ssot/actions/workflows/ci.yml)
+[![CI](https://github.com/rahmanef63/agent-at-manef/actions/workflows/ci.yml/badge.svg)](https://github.com/rahmanef63/agent-at-manef/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Local first](https://img.shields.io/badge/local--first-no%20runtime%20dependencies-slateblue)](docs/architecture.md)
@@ -17,11 +17,29 @@ Define agents once. Audit existing setups. Reconcile drift. Back up curated know
 
 ---
 
+
+## Agent@Manef, formerly Agent SSOT
+
+A Manef product created by Rahman: portable agent identity and curated context, independent
+of the model, harness and hosting vendor. Repository slug: `agent-at-manef`. The existing
+`agent_ssot` module, `agent-ssot` CLI and version-1 workspace/backup formats remain compatible.
+The new namespace is `agent_at_manef`; source installation also provides `agent-at-manef`.
+No PyPI/npm release or hosted agent library is implied by this rename.
+
+[Library API](docs/library.md) · [Ecosystem review](docs/research.md) ·
+[Instruction files](docs/instruction-files.md) · [Product roadmap](docs/product.md)
+
+The designated upstream is `rahmanef63/agent-at-manef`. Repository ID `1414110928` was renamed
+in place; at the last verified ownership read it still belongs to `official-manef` while the
+transfer awaits acceptance. This review branch prepares the canonical links; do not mark the
+ownership migration complete or create a conflicting replacement repository. See
+[the transfer runbook](docs/governance.md).
+
 ## The problem
 
 An agent's identity lives in one app, its project decisions in another, and its useful working context somewhere in a chat history. Over time, copies disagree. A fresh machine starts with the wrong instructions. Cleaning up an old profile risks deleting the only useful copy.
 
-**Agent SSOT separates the durable agent definition from the software that runs it.** Canonical Markdown and small JSON descriptors hold the context you own. Generated platform views adapt that context. Private credentials and live session databases remain outside both.
+**Agent@Manef separates the durable agent definition from the software that runs it.** Canonical Markdown and small JSON descriptors hold the context you own. Generated platform views adapt that context. Private credentials and live session databases remain outside both.
 
 This is a **local-first context lifecycle toolkit**, not a hosted service, universal agent runtime, or a promise of identical model behavior.
 
@@ -51,22 +69,22 @@ This is a **local-first context lifecycle toolkit**, not a hosted service, unive
 Requirements: **Python 3.10+**. Git is needed only to clone this toolkit. Core commands have no third-party runtime dependencies, make no network requests and never launch an AI runtime.
 
 ```sh
-git clone https://github.com/rahmanef63/agent-ssot.git
-cd agent-ssot
+git clone https://github.com/rahmanef63/agent-at-manef.git
+cd agent-at-manef
 
 # Preview first. No destination workspace is created.
-python -m agent_ssot init --target ../my-agent-context
+python -m agent_at_manef init --target ../my-agent-context
 
 # Create your own canonical context outside this public toolkit.
-python -m agent_ssot init --target ../my-agent-context --apply
-python -m agent_ssot doctor --workspace ../my-agent-context
+python -m agent_at_manef init --target ../my-agent-context --apply
+python -m agent_at_manef doctor --workspace ../my-agent-context
 
 # Prepare a platform view; review it before opening it in the destination app.
-python -m agent_ssot render --workspace ../my-agent-context \
+python -m agent_at_manef render --workspace ../my-agent-context \
   --platform codex --target ../my-codex-agents
-python -m agent_ssot render --workspace ../my-agent-context \
+python -m agent_at_manef render --workspace ../my-agent-context \
   --platform codex --target ../my-codex-agents --apply
-python -m agent_ssot verify --target ../my-codex-agents
+python -m agent_at_manef verify --target ../my-codex-agents
 ```
 
 On Windows, use `py -3` instead of `python` when appropriate; enter wrapped commands on one line in PowerShell. On Linux/macOS, `python3` may be the interpreter name. [Detailed setup](docs/getting-started.md) explains both paths.
@@ -84,7 +102,7 @@ The adapters generate **different views of the same source**, not six different 
 
 ```sh
 # Machine-readable declaration for MSO and other host integrations; no workspace required.
-python -m agent_ssot capabilities
+python -m agent_at_manef capabilities
 ```
 
 Host independence is not a promise that every device, serverless platform or browser can run
@@ -131,10 +149,10 @@ my-codex-agents/                  # Generated, replaceable platform view
 
 ```sh
 # Read-only candidate inventory. Redirect reports only to a private location.
-python -m agent_ssot inventory --source /path/to/existing-agent
+python -m agent_at_manef inventory --source /path/to/existing-agent
 
 # Select a file deliberately; review the resulting inbox candidate.
-python -m agent_ssot import --workspace ../my-agent-context \
+python -m agent_at_manef import --workspace ../my-agent-context \
   --source /path/to/existing-agent --file SOUL.md \
   --agent researcher --platform hermes --apply
 ```
@@ -144,11 +162,11 @@ The original stays unchanged. The candidate is not automatically promoted, rende
 After review, reconcile the generated view:
 
 ```sh
-python -m agent_ssot reconcile --workspace ../my-agent-context \
+python -m agent_at_manef reconcile --workspace ../my-agent-context \
   --platform codex --target ../my-codex-agents
 
 # Optional: move ONLY unchanged, obsolete managed files into .ssot-history/.
-python -m agent_ssot reconcile --workspace ../my-agent-context \
+python -m agent_at_manef reconcile --workspace ../my-agent-context \
   --platform codex --target ../my-codex-agents --quarantine-stale --apply
 ```
 
@@ -157,11 +175,11 @@ An unmanaged file or locally edited generated file becomes a **conflict**, not a
 ## Backup once, render elsewhere
 
 ```sh
-python -m agent_ssot backup --workspace ../my-agent-context \
+python -m agent_at_manef backup --workspace ../my-agent-context \
   --output ../context-backup.zip --apply
-python -m agent_ssot restore --archive ../context-backup.zip \
+python -m agent_at_manef restore --archive ../context-backup.zip \
   --target ../restored-context --apply
-python -m agent_ssot render --workspace ../restored-context \
+python -m agent_at_manef render --workspace ../restored-context \
   --platform gemini --target ../my-gemini-agents --apply
 ```
 
@@ -193,7 +211,7 @@ No adapter automatically installs a CLI, creates a hosted bot, activates hooks, 
 | `verify` | Check managed output integrity | Read-only |
 | `backup` / `restore` | Context-only archive and validated recovery | Preview |
 
-Use `python -m agent_ssot COMMAND --help` for exact options. [CLI reference](docs/cli.md).
+Use `python -m agent_at_manef COMMAND --help` for exact options. [CLI reference](docs/cli.md).
 
 ## Safety model
 
@@ -207,7 +225,7 @@ These guards are **not** OS sandboxing, complete PII/secret detection, signed pr
 
 ## Canonical upstream and contribution forks
 
-The designated upstream is **[rahmanef63/agent-ssot](https://github.com/rahmanef63/agent-ssot)**.
+The designated upstream is **[rahmanef63/agent-ssot](https://github.com/rahmanef63/agent-at-manef)**.
 Issues, releases, documentation links and stars should refer to this one source. Manef is the
 maintenance/contribution identity; a fork is a working copy, not another product authority.
 Contributor branches return changes through upstream pull requests. Fork updates must preserve
@@ -231,3 +249,14 @@ Tests use synthetic fixtures. Core checks do not require paid model calls or rea
 **Version 0.1.0:** an initial, explicitly bounded implementation. Not affiliated with OpenAI, Anthropic, Google, Nous Research or xAI. Platform names belong to their respective owners.
 
 MIT licensed. Created by [Rahman](https://github.com/rahmanef63). Maintained with [Manef](https://github.com/official-manef).
+
+## Audit compatibility before migration
+
+A familiar endpoint name does not guarantee the same tool, approval, session or host behavior.
+Use `python -m agent_at_manef assess --requirements examples/requirements.json --target-profile examples/target-profile.json`.
+The synthetic example intentionally exits 2 because required capabilities remain unknown.
+Supported declarations need evidence references and dates; even a compatible declaration does
+not establish authorization or a successful live test. [Assessment contract](docs/library.md).
+
+Read the [ecosystem review](docs/research.md) for patterns from personal agents, open harnesses,
+SDKs and model providers. Researched products are not automatically supported adapters.

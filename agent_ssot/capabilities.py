@@ -22,6 +22,9 @@ def describe():
         "ok": True,
         "kind": "agent-ssot-capabilities",
         "interface_version": INTERFACE_VERSION,
+        "product": {"name": "Agent@Manef", "slug": "agent-at-manef", "legacy_namespace": "agent_ssot"},
+        "library_api_version": 1,
+        "assessment_schema_versions": [1],
         "implementation_version": __version__,
         "canonical_schema_versions": [core.VERSION],
         "backup_schema_versions": [core.VERSION],
@@ -40,6 +43,7 @@ def describe():
         },
         "commands": {
             "capabilities": {"mutating": False},
+            "assess": {"mutating": False, "declaration_comparison_only": True},
             "doctor": {"mutating": False},
             "inventory": {"mutating": False},
             "verify": {"mutating": False},

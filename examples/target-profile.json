@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "target_id": "synthetic-unverified-target",
+  "claims": {
+    "host.filesystem": {
+      "status": "supported",
+      "evidence": "Synthetic example, not a machine measurement",
+      "observed_at": "2026-10-11"
+    },
+    "model.tool_calls": {
+      "status": "unknown",
+      "evidence": "",
+      "observed_at": null
+    },
+    "harness.approval_enforcement": {
+      "status": "unknown",
+      "evidence": "",
+      "observed_at": null
+    }
+  }
+}

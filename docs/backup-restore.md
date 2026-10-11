@@ -6,7 +6,7 @@
 
 A portable context backup preserves what another platform can reasonably understand: identities, curated knowledge, decisions, policies and procedures. A native disaster-recovery backup may also need databases, attachments, application versions and encrypted secrets. These have different trust, format and recovery requirements.
 
-**Agent SSOT implements the first kind only.** It does not clone an app, back up credentials, translate every message history, export provider-hidden memory or preserve every runtime customization.
+**Agent@Manef implements the first kind only.** It does not clone an app, back up credentials, translate every message history, export provider-hidden memory or preserve every runtime customization.
 
 ## Included and excluded
 
@@ -22,9 +22,9 @@ Every included file must pass the canonical schema/path/size rules and selected 
 ## Create a backup
 
 ```sh
-python -m agent_ssot doctor --workspace ../my-agent-context
-python -m agent_ssot backup --workspace ../my-agent-context --output ../context-2026-10-11.zip
-python -m agent_ssot backup --workspace ../my-agent-context --output ../context-2026-10-11.zip --apply
+python -m agent_at_manef doctor --workspace ../my-agent-context
+python -m agent_at_manef backup --workspace ../my-agent-context --output ../context-2026-10-11.zip
+python -m agent_at_manef backup --workspace ../my-agent-context --output ../context-2026-10-11.zip --apply
 ```
 
 Output is a new ZIP with `bundle.json`, schema version, per-file SHA-256 and byte lengths. Existing archive names are refused. A backup file is private data even when its underlying toolkit is public.
@@ -34,10 +34,10 @@ Output is a new ZIP with `bundle.json`, schema version, per-file SHA-256 and byt
 ## Restore and switch platform
 
 ```sh
-python -m agent_ssot restore --archive ../context-2026-10-11.zip --target ../recovered-context
-python -m agent_ssot restore --archive ../context-2026-10-11.zip --target ../recovered-context --apply
-python -m agent_ssot doctor --workspace ../recovered-context
-python -m agent_ssot render --workspace ../recovered-context --platform hermes --target ../hermes-view --apply
+python -m agent_at_manef restore --archive ../context-2026-10-11.zip --target ../recovered-context
+python -m agent_at_manef restore --archive ../context-2026-10-11.zip --target ../recovered-context --apply
+python -m agent_at_manef doctor --workspace ../recovered-context
+python -m agent_at_manef render --workspace ../recovered-context --platform hermes --target ../hermes-view --apply
 ```
 
 Restoration validates the manifest, complete canonical schema, checksums, unique case-insensitive filenames, relative paths, entry types and extraction limits before creating the requested destination. Symlinks, traversal, encrypted ZIP entries and unsupported schemas are refused. The destination must be new, never your active home/profile.

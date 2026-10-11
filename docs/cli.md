@@ -1,6 +1,6 @@
 # CLI reference
 
-Run from the source checkout with `python -m agent_ssot`. Optional local installation provides `agent-ssot`. All commands return JSON; success exits 0, a validation/conflict failure exits 1, and argparse usage errors exit 2. Error output intentionally avoids raw input/credential values.
+Run from the source checkout with `python -m agent_at_manef`. Optional local installation provides `agent-ssot`. All commands return JSON; success exits 0, a validation/conflict failure exits 1, and argparse usage errors exit 2. Error output intentionally avoids raw input/credential values.
 
 ## Workspace and agents
 
@@ -34,12 +34,12 @@ Platforms: `generic`, `codex`, `claude`, `gemini`, `hermes`, `grokbot`. A differ
 
 `restore --archive FILE.zip --target PATH [--apply]` validates before writing a new destination. Preview may use an internal temporary directory for schema verification, but does not modify the requested target. No native process starts.
 
-`--version` prints the toolkit version. For exact parser help, use `python -m agent_ssot COMMAND --help`.
+`--version` prints the toolkit version. For exact parser help, use `python -m agent_at_manef COMMAND --help`.
 
 ## Offline capability discovery
 
 ```sh
-python -m agent_ssot capabilities
+python -m agent_at_manef capabilities
 ```
 
 No arguments or workspace are needed. `kind`, `interface_version`, implementation version,
@@ -47,3 +47,11 @@ canonical/backup schema versions, available commands, adapter output levels and 
 are returned as JSON. This is a declaration, not a runtime health or authentication check.
 Hosts must reject unsupported interface/schema versions rather than guess compatibility.
 See [MSO consumer contract](integrations/mso.md).
+
+## Branded aliases and assessment
+
+Use either `python -m agent_at_manef` or the compatible `python -m agent_ssot`.
+Source installation exposes both `agent-at-manef` and `agent-ssot` commands.
+`assess --requirements <json> --target-profile <json>` is read-only and compares declarations;
+exit 0 means declared compatibility, 2 means unmet requirements, and 1 means invalid input.
+It never authorizes deployment. See [library contract](library.md).

@@ -4,7 +4,7 @@
 
 ## One canonical identity; several replaceable views
 
-Agent SSOT treats identities, charters, curated knowledge, policies and decisions as owned
+Agent@Manef treats identities, charters, curated knowledge, policies and decisions as owned
 source data. Selecting a model, harness or machine must not silently rewrite that source.
 Generated files are replaceable representations; native session stores and credentials are not.
 This contract describes the implemented core and its explicit limits, not universal runtime parity.
@@ -56,7 +56,7 @@ path portability is not a semantic portability audit of every sentence.
 
 ## Discovery and compatibility
 
-`python -m agent_ssot capabilities` returns an offline declaration with interface version,
+`python -m agent_at_manef capabilities` returns an offline declaration with interface version,
 implementation version, supported canonical/backup schemas, commands, output levels and limits.
 It does not inspect the current machine or test a connection. Every readiness flag remains
 false until a separate verifier provides actual evidence.
