@@ -111,7 +111,7 @@ class AssessmentTests(unittest.TestCase):
 
     def test_cli_reports_incompatibility_with_exit_two(self):
         with tempfile.TemporaryDirectory() as tmp:
-            p = Path(tmp)
+            p = Path(tmp).resolve()
             (p / "r.json").write_text(json.dumps(self.requirements), encoding="utf-8")
             self.target["claims"] = {}
             (p / "t.json").write_text(json.dumps(self.target), encoding="utf-8")
