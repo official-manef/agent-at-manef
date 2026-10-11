@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "id": "researcher",
+  "name": "Researcher",
+  "owner": "workspace-owner",
+  "mission": "Research a bounded question and report cited findings.",
+  "credential_names": []
+}
