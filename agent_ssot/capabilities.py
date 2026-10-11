@@ -1,5 +1,5 @@
 """Offline, additive interface discovery for host applications and adapters."""
-from . import __version__, core
+from . import __version__, adapters, core
 
 INTERFACE_VERSION = 1
 
@@ -10,14 +10,6 @@ def describe():
     The command does not inspect user files, contact providers or launch programs.
     Hosts must separately pin the package revision and verify destination access.
     """
-    levels = {
-        "generic": "context-files",
-        "codex": "context-files",
-        "claude": "read-only-definition-files",
-        "gemini": "context-files",
-        "hermes": "profile-blueprint",
-        "grokbot": "app-settings-recipe",
-    }
     return {
         "ok": True,
         "kind": "agent-ssot-capabilities",
@@ -25,6 +17,7 @@ def describe():
         "product": {"name": "Agent@Manef", "slug": "agent-at-manef", "legacy_namespace": "agent_ssot"},
         "library_api_version": 1,
         "assessment_schema_versions": [1],
+        "catalog_schema_versions": [1],
         "implementation_version": __version__,
         "canonical_schema_versions": [core.VERSION],
         "backup_schema_versions": [core.VERSION],
@@ -44,17 +37,14 @@ def describe():
         "commands": {
             "capabilities": {"mutating": False},
             "assess": {"mutating": False, "declaration_comparison_only": True},
+            "catalog": {"mutating": False, "declaration_comparison_only": True},
             "doctor": {"mutating": False},
             "inventory": {"mutating": False},
             "verify": {"mutating": False},
             **{name: {"mutating": True, "default_mode": "preview", "apply_flag": "--apply"}
                for name in ("init", "new", "import", "render", "reconcile", "backup", "restore")},
         },
-        "adapters": [
-            {"id": name, "output_level": levels[name], "native_registration": False,
-             "model_execution": False, "account_migration": False}
-            for name in core.PLATFORMS
-        ],
+        "adapters": adapters.describe(),
         "limits": {
             "max_file_bytes": core.MAX_FILE,
             "max_total_bytes": core.MAX_TOTAL,

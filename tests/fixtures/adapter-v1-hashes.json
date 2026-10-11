@@ -1,0 +1,73 @@
+{
+  "fixture": "synthetic core.init researcher",
+  "outputs": {
+    "claude": {
+      ".claude/agents/researcher.md": "1a1dd8be52935f5e9ce1b3b0ef6c929d6959b4d6fc156599c9334f30c79f80e6",
+      "START-HERE.md": "a218d9656ca53448670c8b6db29bf55a2bf7da5b0effed953be2208c5c4434bc",
+      "agents/researcher/AGENTS.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/CLAUDE.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/SETUP.md": "053b73401659cf74b1c047c77933f7d74d590ac83185a04a571e56cf124b9044",
+      "agents/researcher/context/agents/researcher/AGENT.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/agent.json": "d0cb56d4a53e3ea991f53aee8741ffa5088490fa6aee5a504c9157184446e3c8",
+      "agents/researcher/context/agents/researcher/context.md": "6cc47e108b73db623134362b0b9cc9c48d62d13755a32dcfac301fd21177ce11",
+      "agents/researcher/context/policies/operating-rules.md": "73748ecc97c88b21183a49c218fdf5ae4fceeaf625612b124e2460fa8e56235f",
+      "agents/researcher/env.example": "631c90b83531b49c13a9edced4fe8d1bf3528b1e6db265159f47ec6e75116681"
+    },
+    "codex": {
+      "START-HERE.md": "a218d9656ca53448670c8b6db29bf55a2bf7da5b0effed953be2208c5c4434bc",
+      "agents/researcher/AGENTS.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/SETUP.md": "e99b31df1c65f94c3c74a4f78efd5adf8212a2ba57b24f2853e6506f8f956f36",
+      "agents/researcher/context/agents/researcher/AGENT.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/agent.json": "d0cb56d4a53e3ea991f53aee8741ffa5088490fa6aee5a504c9157184446e3c8",
+      "agents/researcher/context/agents/researcher/context.md": "6cc47e108b73db623134362b0b9cc9c48d62d13755a32dcfac301fd21177ce11",
+      "agents/researcher/context/policies/operating-rules.md": "73748ecc97c88b21183a49c218fdf5ae4fceeaf625612b124e2460fa8e56235f",
+      "agents/researcher/env.example": "631c90b83531b49c13a9edced4fe8d1bf3528b1e6db265159f47ec6e75116681"
+    },
+    "gemini": {
+      "START-HERE.md": "a218d9656ca53448670c8b6db29bf55a2bf7da5b0effed953be2208c5c4434bc",
+      "agents/researcher/AGENTS.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/GEMINI.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/SETUP.md": "8c7167756518d4f6b28f6ec36a76e6c63fb073a927e58f89a293241dad62bcaa",
+      "agents/researcher/context/agents/researcher/AGENT.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/agent.json": "d0cb56d4a53e3ea991f53aee8741ffa5088490fa6aee5a504c9157184446e3c8",
+      "agents/researcher/context/agents/researcher/context.md": "6cc47e108b73db623134362b0b9cc9c48d62d13755a32dcfac301fd21177ce11",
+      "agents/researcher/context/policies/operating-rules.md": "73748ecc97c88b21183a49c218fdf5ae4fceeaf625612b124e2460fa8e56235f",
+      "agents/researcher/env.example": "631c90b83531b49c13a9edced4fe8d1bf3528b1e6db265159f47ec6e75116681"
+    },
+    "generic": {
+      "START-HERE.md": "a218d9656ca53448670c8b6db29bf55a2bf7da5b0effed953be2208c5c4434bc",
+      "agents/researcher/AGENTS.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/SETUP.md": "268c96282ab8a9cf7c90c98e5c19c208a97604299dd64c3573530d0023d02074",
+      "agents/researcher/context/agents/researcher/AGENT.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/agent.json": "d0cb56d4a53e3ea991f53aee8741ffa5088490fa6aee5a504c9157184446e3c8",
+      "agents/researcher/context/agents/researcher/context.md": "6cc47e108b73db623134362b0b9cc9c48d62d13755a32dcfac301fd21177ce11",
+      "agents/researcher/context/policies/operating-rules.md": "73748ecc97c88b21183a49c218fdf5ae4fceeaf625612b124e2460fa8e56235f",
+      "agents/researcher/env.example": "631c90b83531b49c13a9edced4fe8d1bf3528b1e6db265159f47ec6e75116681"
+    },
+    "grokbot": {
+      "START-HERE.md": "a218d9656ca53448670c8b6db29bf55a2bf7da5b0effed953be2208c5c4434bc",
+      "agents/researcher/AGENTS.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/SETUP.md": "b07e7dcb399ff08b50738847ee8d6751763876449957bb6a6d5889164b8d6971",
+      "agents/researcher/context/agents/researcher/AGENT.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/agent.json": "d0cb56d4a53e3ea991f53aee8741ffa5088490fa6aee5a504c9157184446e3c8",
+      "agents/researcher/context/agents/researcher/context.md": "6cc47e108b73db623134362b0b9cc9c48d62d13755a32dcfac301fd21177ce11",
+      "agents/researcher/context/policies/operating-rules.md": "73748ecc97c88b21183a49c218fdf5ae4fceeaf625612b124e2460fa8e56235f",
+      "agents/researcher/env.example": "631c90b83531b49c13a9edced4fe8d1bf3528b1e6db265159f47ec6e75116681",
+      "agents/researcher/persona.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/profile-fields.json": "bb4e0f7206d6a7853ac24cda9230296a6994c71461a6893141cb25f6761d12bd"
+    },
+    "hermes": {
+      "START-HERE.md": "a218d9656ca53448670c8b6db29bf55a2bf7da5b0effed953be2208c5c4434bc",
+      "agents/researcher/AGENTS.md": "dd8f2b51653988a8f04cee6682d5da7cb804b0ffbd6e1a57a2df929a42f8d9b3",
+      "agents/researcher/SETUP.md": "46bac8e409bb85947a53b66feb5e8d4e47493923d5d84043b09b69ffce94751d",
+      "agents/researcher/SOUL.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/AGENT.md": "8acd9b2af52fac4b83f6e9d643ffe29abbc7f6766012b2e013ddf4b718c7cc31",
+      "agents/researcher/context/agents/researcher/agent.json": "d0cb56d4a53e3ea991f53aee8741ffa5088490fa6aee5a504c9157184446e3c8",
+      "agents/researcher/context/agents/researcher/context.md": "6cc47e108b73db623134362b0b9cc9c48d62d13755a32dcfac301fd21177ce11",
+      "agents/researcher/context/policies/operating-rules.md": "73748ecc97c88b21183a49c218fdf5ae4fceeaf625612b124e2460fa8e56235f",
+      "agents/researcher/env.example": "631c90b83531b49c13a9edced4fe8d1bf3528b1e6db265159f47ec6e75116681",
+      "agents/researcher/profile.yaml": "65ef3224374882d341b0250823fdc11f1dfb53f480172ee807fd23dbfbacf4a2"
+    }
+  },
+  "source_revision": "6ddc09efc97e25b3a52a035789ee9f9ef4b05b46"
+}

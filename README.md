@@ -260,3 +260,12 @@ not establish authorization or a successful live test. [Assessment contract](doc
 
 Read the [ecosystem review](docs/research.md) for patterns from personal agents, open harnesses,
 SDKs and model providers. Researched products are not automatically supported adapters.
+
+## Candidate 0.2.0rc1
+
+[Release checks](docs/release.md) · [Adapter conformance](docs/adapters.md) · [Catalog metadata](docs/catalog.md)
+
+This candidate adds a reviewed static adapter registry and read-only catalog validation.
+CI builds wheel/sdist, checks offline installation, rebuilds the source archive and exercises
+recovery. These are candidate artifacts, not a registry release, hosted catalog, native runtime
+login or live MSO integration. Legacy schema and CLI aliases remain supported.

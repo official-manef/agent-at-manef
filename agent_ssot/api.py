@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from . import assessment, capabilities as capability_contract, core
+from . import catalog, assessment, capabilities as capability_contract, core
 
 API_VERSION = 1
 
@@ -43,3 +43,7 @@ def restore(archive: str | Path, target: str | Path, *, apply: bool = False) -> 
 
 def verify(target: str | Path) -> dict:
     return core.verify(target)
+
+
+def inspect_catalog(path: str | Path) -> dict:
+    return catalog.inspect_file(path)

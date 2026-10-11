@@ -101,3 +101,11 @@ Contoh di folder examples sengaja belum kompatibel; exit 2 adalah hasil yang dih
 Kita mengambil pola yang berguna, bukan menyalin semua produk. Lisensi open-source,
 source-available, model open-weight dan layanan hosted harus dibedakan. Integrasi manef.dev
 dan library terdistribusi masih tahap berikutnya, bukan sudah live dari perubahan dokumentasi.
+
+## Kandidat 0.2.0rc1
+
+[Pemeriksaan rilis](docs/release.md) · [Kontrak adapter](docs/adapters.md) · [Metadata katalog](docs/catalog.md)
+
+Adapter memakai satu registry yang direview. Katalog memvalidasi metadata lokal tanpa mengunduh
+atau memasang agent. CI membangun wheel/sdist serta menguji instalasi offline dan pemulihan.
+Ini artefak kandidat, bukan rilis registry, katalog hosted atau integrasi runtime live.

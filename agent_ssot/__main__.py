@@ -3,7 +3,7 @@ import argparse
 import json
 import sys
 import zipfile
-from . import __version__, assessment, capabilities, core
+from . import catalog, __version__, assessment, capabilities, core
 
 
 def main(argv=None):
@@ -11,6 +11,8 @@ def main(argv=None):
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("capabilities", help="Report offline interface/schema/adapter contracts, not runtime readiness")
+    c = sub.add_parser("catalog", help="Validate local metadata; never install entries")
+    c.add_argument("--file", required=True)
     p = sub.add_parser("assess", help="Compare declared model/harness/host requirements; never authorize deployment")
     p.add_argument("--requirements", required=True)
     p.add_argument("--target-profile", required=True)
@@ -55,7 +57,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         cmd = args.command
-        if cmd == "capabilities":
+        if cmd == "catalog":
+            result = catalog.inspect_file(args.file)
+        elif cmd == "capabilities":
             result = capabilities.describe()
         elif cmd == "assess":
             result = assessment.compare(core.obj(core.read(args.requirements)), core.obj(core.read(args.target_profile)))

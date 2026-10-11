@@ -55,3 +55,8 @@ Source installation exposes both `agent-at-manef` and `agent-ssot` commands.
 `assess --requirements <json> --target-profile <json>` is read-only and compares declarations;
 exit 0 means declared compatibility, 2 means unmet requirements, and 1 means invalid input.
 It never authorizes deployment. See [library contract](library.md).
+
+## Catalog
+
+`python -m agent_at_manef catalog --file examples/catalog.json` performs read-only metadata
+validation. No downloads, approval or installation. [Contract](catalog.md).

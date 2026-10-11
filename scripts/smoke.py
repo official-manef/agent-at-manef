@@ -21,6 +21,8 @@ def run(*args):
 declaration = run('capabilities')
 assert declaration['interface_version'] == 1 and declaration['declaration_only']
 assert declaration['readiness']['mso_integration_verified'] is False
+catalog_report = run('catalog', '--file', ROOT/'examples/catalog.json')
+assert catalog_report['installed'] is False and catalog_report['declaration_only']
 
 with tempfile.TemporaryDirectory() as folder:
     base = Path(folder).resolve()

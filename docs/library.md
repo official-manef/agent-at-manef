@@ -56,3 +56,8 @@ MSO is a consumer of the toolkit, not a prerequisite. See the
 host; keep canonical definitions portable and independently usable.
 
 [Detailed assessment schema](assessment.md) and synthetic examples document the comparison contract.
+
+## Catalog metadata
+
+`api.inspect_catalog(path)` validates one explicit local file. It does not authenticate source,
+review or install authority. See [catalog](catalog.md) and [release gates](release.md).

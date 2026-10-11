@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "agent-at-manef-catalog",
+  "entries": [
+    {
+      "id": "example-researcher",
+      "kind": "agent",
+      "version": "0.1.0",
+      "title": "Synthetic example \u2014 not installable",
+      "publisher": "example publisher",
+      "license": "MIT",
+      "state": "draft",
+      "source": {
+        "repository": "https://example.invalid/researcher",
+        "revision": "0000000000000000000000000000000000000000",
+        "path": "AGENT.md",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "requirements": [
+        "host.filesystem"
+      ],
+      "credential_names": [],
+      "review": null
+    }
+  ]
+}
