@@ -83,7 +83,7 @@ def main(argv=None):
             result = core.backup(args.workspace, args.output, args.apply)
         else:
             result = core.restore(args.archive, args.target, args.apply)
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps(result, ensure_ascii=True, indent=2))
         if cmd == "assess" and not result["compatible_by_declaration"]:
             return 2
         return 0 if result["ok"] else 1
