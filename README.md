@@ -269,3 +269,11 @@ This candidate adds a reviewed static adapter registry and read-only catalog val
 CI builds wheel/sdist, checks offline installation, rebuilds the source archive and exercises
 recovery. These are candidate artifacts, not a registry release, hosted catalog, native runtime
 login or live MSO integration. Legacy schema and CLI aliases remain supported.
+
+## Optional encrypted recovery
+
+The default context ZIP is still unsigned and unencrypted. The opt-in
+[age/minisign transport](docs/secure-transfer.md) encrypts a validated ZIP and verifies the
+pinned sender signature before decryption and v1 restore. Signing stays in the sender's
+private terminal; no keys enter this repo. External tools run only with explicit apply/execute.
+Actual-tool recovery is tested separately from the model/harness-independent core.

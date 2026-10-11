@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0rc2 — candidate, not published
+
+- Optional age encryption and minisign signature-before-decrypt recovery for v1 context ZIPs.
+- Explicit execution, pinned public trust, bounded snapshots, private-key mode checks and redacted errors.
+- Separate actual-tool recovery tests; no signing/key generation or core runtime dependency.
+- Default backup format, schema v1, legacy aliases and core filesystem logic remain unchanged.
+
 ## Unreleased
 
 - Add offline `capabilities` JSON for interface/schema/adapter discovery.

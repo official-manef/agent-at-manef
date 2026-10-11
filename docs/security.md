@@ -32,3 +32,7 @@ Only generic code, documentation, examples and synthetic tests belong here. Do n
 ## Concurrency and recovery
 
 Cooperative operation locks do not protect against all races or hostile processes. Writes are atomic per file, not across a complete view. If an operation fails, inspect which files changed, preserve history and restore from a trusted canonical backup into a new directory. Never automatically unlock a currently running operation.
+
+## Optional external security tools
+
+The canonical core still has no runtime-launch or key-loading path. The separately invoked [secure transport module](secure-transfer.md) calls reviewed local age/minisign binaries with fixed arguments and explicit execution. It is not automatic signing, organizational authorization, a replacement for encrypted disks, or a claim of safe execution of signed instructions.

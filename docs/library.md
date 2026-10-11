@@ -61,3 +61,7 @@ host; keep canonical definitions portable and independently usable.
 
 `api.inspect_catalog(path)` validates one explicit local file. It does not authenticate source,
 review or install authority. See [catalog](catalog.md) and [release gates](release.md).
+
+## Optional secure transport module
+
+`agent_at_manef.secure_transfer` provides preview-first `encrypt`, `verify` and `restore` wrappers for external age/minisign tools. It is not loaded by the default facade. Read the [security and trust contract](secure-transfer.md) before using its explicit execution flags. Default backup/restore and legacy aliases stay unchanged.

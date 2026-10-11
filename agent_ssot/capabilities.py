@@ -54,6 +54,14 @@ def describe():
             "backup_signed": False,
             "os_sandbox": False,
         },
+        "optional_transports": [{
+            "id": "age-minisign", "module": "agent_at_manef.secure_transfer",
+            "external_tools": ["age", "minisign"], "automatically_installed": False,
+            "default_mode": "preview", "explicit_execution_required": True,
+            "signing": "separate-private-operator-step", "signature_before_decryption": True,
+            "private_key_read_by_external_age_only": True, "native_runtime_started": False,
+            "real_tool_acceptance": "Linux CI; other OS integration not certified",
+        }],
         "readiness": {
             "destination_inspected": False,
             "provider_authenticated": False,
