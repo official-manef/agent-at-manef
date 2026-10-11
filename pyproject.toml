@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-ssot-kit"
+name = "agent-at-manef"
 version = "0.1.0"
-description = "Local-first agent context: define, inventory, reconcile, back up and restore."
+description = "Agent@Manef: local-first agent context: define, inventory, reconcile, back up and restore."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -14,11 +14,12 @@ maintainers = [{name = "Manef"}]
 dependencies = []
 
 [project.scripts]
+agent-at-manef = "agent_at_manef.__main__:main"
 agent-ssot = "agent_ssot.__main__:main"
 
 [project.urls]
-Repository = "https://github.com/rahmanef63/agent-ssot"
-Issues = "https://github.com/rahmanef63/agent-ssot/issues"
+Repository = "https://github.com/rahmanef63/agent-at-manef"
+Issues = "https://github.com/rahmanef63/agent-at-manef/issues"
 
 [tool.setuptools.packages.find]
-include = ["agent_ssot*"]
+include = ["agent_ssot*", "agent_at_manef*"]

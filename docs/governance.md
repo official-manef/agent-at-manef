@@ -82,3 +82,12 @@ in public issue comments. Recheck current GitHub requirements at execution time.
 
 Primary references: [Repository transfer](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository) ·
 [Fork synchronization](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).
+
+## Branding update — 11 October 2026
+
+The same repository ID 1414110928 was renamed to agent-at-manef. Product display name is
+Agent@Manef. The desired owner remains rahmanef63; official-manef maintains the product.
+A rename is not transfer acceptance. Re-read the stable repository ID to resolve the current
+owner/name, verify pending transfer state, and do not restart or cancel a transfer speculatively.
+Update an acceptance-dependent URL only after the destination exists. Future organization
+creation remains deferred. Existing licenses and historical commit authors remain unchanged.

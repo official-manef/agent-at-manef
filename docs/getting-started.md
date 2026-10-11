@@ -10,10 +10,10 @@ The CLI needs Python 3.10 or newer. It uses only the Python standard library. Co
 
 ```sh
 python --version
-python -m agent_ssot --help
-python -m agent_ssot init --target ../my-agent-context
-python -m agent_ssot init --target ../my-agent-context --apply
-python -m agent_ssot doctor --workspace ../my-agent-context
+python -m agent_at_manef --help
+python -m agent_at_manef init --target ../my-agent-context
+python -m agent_at_manef init --target ../my-agent-context --apply
+python -m agent_at_manef doctor --workspace ../my-agent-context
 ```
 
 The preview returns JSON and leaves the requested destination absent. The apply creates `workspace.json`, a fictional researcher charter/descriptor/context and shared operating rules. Doctor returns `ok: true`, the canonical agent IDs and file count. It does not check accounts or a running model.
@@ -25,8 +25,8 @@ On Windows use `py -3` in place of `python` when needed. In PowerShell, enter ex
 Edit the researcher files or add another identity. Choose a stable lowercase ID, one accountable owner and a bounded mission.
 
 ```sh
-python -m agent_ssot new --workspace ../my-agent-context --id writer --name Writer --owner editorial --mission "Draft source-backed documentation for review"
-python -m agent_ssot new --workspace ../my-agent-context --id writer --name Writer --owner editorial --mission "Draft source-backed documentation for review" --apply
+python -m agent_at_manef new --workspace ../my-agent-context --id writer --name Writer --owner editorial --mission "Draft source-backed documentation for review"
+python -m agent_at_manef new --workspace ../my-agent-context --id writer --name Writer --owner editorial --mission "Draft source-backed documentation for review" --apply
 ```
 
 `--credential-name` may be repeated for verified runtime variable names, never values. There is no automatic Gmail account, provider account, model assignment or parent credential inheritance. See [agent specification](agent-spec.md).
@@ -36,9 +36,9 @@ Fill the charter's responsibilities, non-goals and acceptance. Curate project co
 ## 3. Render a platform view
 
 ```sh
-python -m agent_ssot render --workspace ../my-agent-context --platform gemini --target ../gemini-view
-python -m agent_ssot render --workspace ../my-agent-context --platform gemini --target ../gemini-view --apply
-python -m agent_ssot verify --target ../gemini-view
+python -m agent_at_manef render --workspace ../my-agent-context --platform gemini --target ../gemini-view
+python -m agent_at_manef render --workspace ../my-agent-context --platform gemini --target ../gemini-view --apply
+python -m agent_at_manef verify --target ../gemini-view
 ```
 
 Use `--agent writer` to select one agent, or repeat it for several. The generated per-agent directory contains its own canonical files plus shared policies/decisions/skills. It does not include unrelated agents' personal context, although shared documents must themselves be appropriately scoped.

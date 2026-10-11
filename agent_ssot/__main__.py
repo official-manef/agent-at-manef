@@ -3,14 +3,17 @@ import argparse
 import json
 import sys
 import zipfile
-from . import __version__, capabilities, core
+from . import __version__, assessment, capabilities, core
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Agent SSOT — define, reconcile and move curated agent context.")
+    parser = argparse.ArgumentParser(description="Agent@Manef — define, reconcile and move curated agent context.")
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("capabilities", help="Report offline interface/schema/adapter contracts, not runtime readiness")
+    p = sub.add_parser("assess", help="Compare declared model/harness/host requirements; never authorize deployment")
+    p.add_argument("--requirements", required=True)
+    p.add_argument("--target-profile", required=True)
     p = sub.add_parser("init", help="Preview/create a private canonical workspace")
     p.add_argument("--target", required=True)
     p.add_argument("--apply", action="store_true")
@@ -54,6 +57,8 @@ def main(argv=None):
         cmd = args.command
         if cmd == "capabilities":
             result = capabilities.describe()
+        elif cmd == "assess":
+            result = assessment.compare(core.obj(core.read(args.requirements)), core.obj(core.read(args.target_profile)))
         elif cmd == "init":
             result = core.init(args.target, args.apply)
         elif cmd == "new":
@@ -75,6 +80,8 @@ def main(argv=None):
         else:
             result = core.restore(args.archive, args.target, args.apply)
         print(json.dumps(result, ensure_ascii=False, indent=2))
+        if cmd == "assess" and not result["compatible_by_declaration"]:
+            return 2
         return 0 if result["ok"] else 1
     except (core.Refusal, OSError, ValueError, TypeError, KeyError, zipfile.BadZipFile):
         # Do not echo hostile filenames, imported content or credential-bearing exception strings.

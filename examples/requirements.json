@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "required": [
+    "model.tool_calls",
+    "harness.approval_enforcement",
+    "host.filesystem"
+  ],
+  "optional": [
+    "storage.durable_checkpoints"
+  ]
+}

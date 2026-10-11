@@ -19,3 +19,11 @@ Added canonical workspace/agent creation, strict schema validation, read-only in
 Added source-fingerprint and per-file integrity checks, selected secret/path guards, synthetic regression tests, cross-platform CI, architecture/migration/recovery/security documentation, and an Indonesian onboarding guide.
 
 Limitations: no automatic canonical promotion, semantic conflict resolution, credential export, encrypted archives, native hosted-bot creation, live-session translation, autonomous synchronization or platform-wide runtime parity.
+
+## Unreleased — Agent@Manef
+
+Brand-aligned namespace/CLI and local library facade, preserving legacy imports and schema-1
+workspaces/backups. Add read-only, fail-closed declaration assessment and primary-source
+platform research. Add product/library planning and clarify instruction-file roles.
+No package registry release, hosted bot provisioning, ownership-transfer completion or live
+landing-page deployment is implied. The filesystem core and legacy state format are preserved.

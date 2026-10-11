@@ -11,12 +11,12 @@ No MSO repository is changed by this toolkit's capability command.
 | Component | Authority |
 |---|---|
 | Canonical private workspace | Reviewed agent identities, knowledge, policies and decisions |
-| Agent SSOT | Validate, inventory, stage imports, render/reconcile and back up/restore canonical data |
+| Agent@Manef | Validate, inventory, stage imports, render/reconcile and back up/restore canonical data |
 | MSO or another host | User interface, task/workspace resolution, authentication, approvals, execution scheduling and live status |
 | Agent harness | Model inference, tool invocation, session lifecycle and runtime-specific profiles |
 | Host OS/container/VM | Files, processes, isolation, resources and private credential storage |
 
-MSO consumes Agent SSOT; Agent SSOT must remain usable without MSO. Integrate a pinned package or
+MSO consumes Agent@Manef; Agent@Manef must remain usable without MSO. Integrate a pinned package or
 source revision instead of copying the core into a second implementation. The public toolkit
 never becomes a store for a user's private operational records.
 
@@ -79,3 +79,12 @@ Then perform one authorized real task and a fresh-session continuation on an own
 destination. Distinguish files prepared, context understood, native agent discovered, provider
 connected, task completed and resumed. The public tests use no paid model or production credentials.
 Native session/database recovery remains a separate private process.
+
+## Library facade and requirements
+
+Use `agent_at_manef.api` or the versioned JSON CLI from a pinned revision. `capabilities` exposes
+library and assessment versions; `assess` compares separate model/harness/host requirements.
+Neither trusts evidence automatically or grants scope. MSO must verify the current user/project,
+private storage boundary, actual runtime capabilities and operation authority independently.
+The legacy module/schema names remain supported. No production MSO dependency is wired by this
+contract change, and a source fingerprint is not a deployment or account-identity attestation.

@@ -14,9 +14,9 @@ A generated view is disposable; its local edits are not disposable by assumption
 | `conflict` | Existing unmanaged or locally edited file differs | Refuse the entire planned apply before writes |
 
 ```sh
-python -m agent_ssot reconcile --workspace ../my-agent-context \
+python -m agent_at_manef reconcile --workspace ../my-agent-context \
   --target ../my-view --platform codex
-python -m agent_ssot reconcile --workspace ../my-agent-context \
+python -m agent_at_manef reconcile --workspace ../my-agent-context \
   --target ../my-view --platform codex --quarantine-stale --apply
 ```
 
