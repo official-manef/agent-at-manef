@@ -13,9 +13,10 @@ import stat
 import tempfile
 import uuid
 import zipfile
+from . import adapters
 
 VERSION = 1
-PLATFORMS = ("generic", "codex", "claude", "gemini", "hermes", "grokbot")
+PLATFORMS = adapters.PLATFORMS
 MAX_FILE = 1_048_576
 MAX_TOTAL = 32 * MAX_FILE
 MAX_FILES = 512
@@ -359,16 +360,8 @@ def render_files(workspace, platform, selected=None):
         guide += "\n".join(f"- [{n}](context/{n})" for n in sorted(context)) + "\n"
         output[prefix + "AGENTS.md"] = guide.encode()
         output[prefix + "env.example"] = ("# Names only. Store real credentials outside canonical/source/generated directories.\n" + "".join(n + "=\n" for n in a["credential_names"])).encode()
-        if platform in {"claude", "gemini"}:
-            output[prefix + ("CLAUDE.md" if platform == "claude" else "GEMINI.md")] = guide.encode()
-        if platform == "claude":
-            output[f".claude/agents/{aid}.md"] = ("---\nname: " + aid + "\ndescription: " + json.dumps("Read-only context for " + a['name']) + "\ntools: Read, Grep, Glob\n---\n\nRead agents/" + aid + "/AGENTS.md relative to the workspace. This definition grants no external actions.\n").encode()
-        if platform == "hermes":
-            output[prefix + "SOUL.md"] = files[prefix + "AGENT.md"]
-            output[prefix + "profile.yaml"] = json_bytes({"display_name": a["name"], "description": a["mission"]})
-        if platform == "grokbot":
-            output[prefix + "profile-fields.json"] = json_bytes({"name": aid, "title": a["name"], "description": a["mission"]})
-            output[prefix + "persona.md"] = files[prefix + "AGENT.md"]
+        view = adapters.AgentView(aid, a["name"], a["mission"], files[prefix + "AGENT.md"], guide.encode())
+        output.update(adapters.render(platform, view))
         output[prefix + "SETUP.md"] = ("# Destination acceptance\n\nUse " + platform + "'s documented native setup to load this context. This is NOT an automatic Bot/API import or a started process.\nVerify account identity, tool scope, cited context readback, one bounded task and a fresh-session check.\nDo not restore tokens, cookies, live sessions, executable hooks or old model IDs from another platform.\n").encode()
     output["START-HERE.md"] = ("# Generated Agent SSOT workspace\n\nOpen the selected agents/<id>/ folder and read AGENTS.md.\nCanonical context is authoritative; do not edit generated files to change the agent.\nAccounts, model behavior and runtime state remain separate.\n").encode()
     bounded(output)
@@ -387,7 +380,7 @@ def managed_name(name):
         return False
     slug(p.parts[1])
     if len(p.parts) == 3:
-        return p.name in {"AGENTS.md", "CLAUDE.md", "GEMINI.md", "SOUL.md", "persona.md", "profile.yaml", "profile-fields.json", "env.example", "SETUP.md"}
+        return p.name in {"AGENTS.md", "env.example", "SETUP.md"} | adapters.MANAGED_FILENAMES
     return p.parts[2] == "context" and portable("/".join(p.parts[3:]))
 
 

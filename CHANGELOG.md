@@ -27,3 +27,11 @@ workspaces/backups. Add read-only, fail-closed declaration assessment and primar
 platform research. Add product/library planning and clarify instruction-file roles.
 No package registry release, hosted bot provisioning, ownership-transfer completion or live
 landing-page deployment is implied. The filesystem core and legacy state format are preserved.
+
+## 0.2.0rc1 — candidate, not registry-published
+
+- Reviewed built-in adapter registry with byte-identical v1 output conformance.
+- Read-only versioned catalog metadata; no untrusted download or execution.
+- Wheel/sdist build, offline installation/rebuild and recovery checks across three operating systems.
+- Existing schema/state/backup v1 and legacy CLI/module aliases preserved.
+- No account migration, automatic publishing or production MSO integration claim.

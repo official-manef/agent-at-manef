@@ -29,9 +29,11 @@ Submit a pull request with rationale, changes, test evidence and remaining gaps.
 ## Upstream and forks
 
 Send product issues, reviewed changes and releases to the designated upstream
-[rahmanef63/agent-ssot](https://github.com/rahmanef63/agent-at-manef). Keep each fork's tracking main
+[rahmanef63/agent-at-manef](https://github.com/rahmanef63/agent-at-manef). Keep each fork's tracking main
 free of independent work; use feature branches and upstream PRs. Synchronization is explicit
 and must never discard unique commits. See [governance](docs/governance.md).
 
 Keep source credits accurate: repository ownership, maintenance responsibility and commit
 attribution are distinct. Do not rewrite historical authorship during transfers.
+
+Adapter changes require [conformance](docs/adapters.md); packaging requires the [release check](docs/release.md).
