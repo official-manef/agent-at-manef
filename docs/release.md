@@ -50,3 +50,7 @@ private `.env` files. Unknown newer backup schemas must be rejected, not reinter
 Primary sources: [PyPA packaging](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
 [metadata](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/),
 [Trusted Publishing](https://docs.pypi.org/trusted-publishers/using-a-publisher/).
+
+## 0.2.0rc2 continuation
+
+This candidate adds opt-in age/minisign encrypted recovery, a separate Linux real-tool CI job, and failure-mode tests. Standard core tests may skip the optional real-tool class when binaries are absent; the dedicated secure recovery job requires them and fails rather than silently skipping. No registry release or key material is published.

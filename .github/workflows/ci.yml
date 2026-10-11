@@ -48,3 +48,20 @@ jobs:
           path: dist/
           if-no-files-found: error
           retention-days: 14
+
+  secure-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install optional test-only security tools from the signed OS package repository
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y age minisign
+      - name: Verify real-tool encrypted recovery with throwaway identities
+        run: python scripts/secure_recovery_check.py

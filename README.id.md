@@ -109,3 +109,11 @@ dan library terdistribusi masih tahap berikutnya, bukan sudah live dari perubaha
 Adapter memakai satu registry yang direview. Katalog memvalidasi metadata lokal tanpa mengunduh
 atau memasang agent. CI membangun wheel/sdist serta menguji instalasi offline dan pemulihan.
 Ini artefak kandidat, bukan rilis registry, katalog hosted atau integrasi runtime live.
+
+## Pemulihan terenkripsi opsional
+
+ZIP konteks standar tetap tanpa enkripsi/signature. Modul opsional
+[age/minisign](docs/secure-transfer.md) mengenkripsi ZIP yang tervalidasi dan memeriksa signature
+pengirim tepercaya sebelum dekripsi serta restore v1. Signing tetap di terminal privat pengirim;
+tidak ada key di repo. Program eksternal hanya berjalan dengan apply/execute eksplisit.
+Pengujian kriptografi nyata terpisah dari core yang tidak memerlukan model atau harness.

@@ -60,3 +60,7 @@ It never authorizes deployment. See [library contract](library.md).
 
 `python -m agent_at_manef catalog --file examples/catalog.json` performs read-only metadata
 validation. No downloads, approval or installation. [Contract](catalog.md).
+
+## Optional transport commands
+
+Run `python -m agent_at_manef.secure_transfer --help` for encrypt/verify/restore. These are separate opt-in commands, not a change to plain `backup`/`restore`. Preview does not run external binaries. See [secure transfer](secure-transfer.md) for trust/key prerequisites and real execution flags.
