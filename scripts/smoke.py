@@ -18,6 +18,10 @@ def run(*args):
     return result
 
 
+declaration = run('capabilities')
+assert declaration['interface_version'] == 1 and declaration['declaration_only']
+assert declaration['readiness']['mso_integration_verified'] is False
+
 with tempfile.TemporaryDirectory() as folder:
     base = Path(folder).resolve()
     source = base/'context'

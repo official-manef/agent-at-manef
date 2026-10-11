@@ -3,13 +3,14 @@ import argparse
 import json
 import sys
 import zipfile
-from . import __version__, core
+from . import __version__, capabilities, core
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Agent SSOT — define, reconcile and move curated agent context.")
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)
+    sub.add_parser("capabilities", help="Report offline interface/schema/adapter contracts, not runtime readiness")
     p = sub.add_parser("init", help="Preview/create a private canonical workspace")
     p.add_argument("--target", required=True)
     p.add_argument("--apply", action="store_true")
@@ -51,7 +52,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         cmd = args.command
-        if cmd == "init":
+        if cmd == "capabilities":
+            result = capabilities.describe()
+        elif cmd == "init":
             result = core.init(args.target, args.apply)
         elif cmd == "new":
             result = core.new_agent(args.workspace, args.id, args.name, args.owner, args.mission, args.credential_name, args.apply)

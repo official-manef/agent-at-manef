@@ -9,15 +9,16 @@ description = "Local-first agent context: define, inventory, reconcile, back up 
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-authors = [{name = "Manef"}]
+authors = [{name = "Rahman"}]
+maintainers = [{name = "Manef"}]
 dependencies = []
 
 [project.scripts]
 agent-ssot = "agent_ssot.__main__:main"
 
 [project.urls]
-Repository = "https://github.com/official-manef/agent-ssot"
-Issues = "https://github.com/official-manef/agent-ssot/issues"
+Repository = "https://github.com/rahmanef63/agent-ssot"
+Issues = "https://github.com/rahmanef63/agent-ssot/issues"
 
 [tool.setuptools.packages.find]
 include = ["agent_ssot*"]
