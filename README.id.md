@@ -21,7 +21,7 @@ Ini bukan server AI, layanan sinkronisasi otomatis, atau jaminan bahwa semua mod
 Butuh Python 3.10+; tidak ada dependency runtime pihak ketiga.
 
 ```sh
-git clone https://github.com/official-manef/agent-ssot.git
+git clone https://github.com/rahmanef63/agent-ssot.git
 cd agent-ssot
 python -m agent_ssot init --target ../konteks-agent
 python -m agent_ssot init --target ../konteks-agent --apply
@@ -63,3 +63,21 @@ Repo ini publik, tetapi konteks agent milikmu harus berada di workspace/repo pri
 Bedakan file disiapkan, konteks dibaca, pemahaman dibuktikan, akun terotorisasi, tugas berhasil, dan sesi berikutnya bisa melanjutkan. Semuanya membutuhkan bukti tersendiri.
 
 [Arsitektur](docs/architecture.md) · [CLI](docs/cli.md) · [Keamanan](SECURITY.md) · [Kontribusi](CONTRIBUTING.md) · [Lisensi MIT](LICENSE)
+
+## Independen dari model, harness, dan host
+
+Format canonical tidak memilih model, provider, agent harness atau vendor VM. Core memakai
+Python 3.10+ dan filesystem lokal. Model, tool, OAuth, proses dan state sesi diatur runtime.
+Enam adapter adalah keluaran konteks/pengaturan, bukan enam runtime yang otomatis aktif.
+
+`python -m agent_ssot capabilities` menghasilkan kontrak versi, schema dan batas dukungan
+berformat JSON, tanpa membaca akun atau workspace. MSO dapat menjadi consumer kontrak ini;
+Agent SSOT tetap dapat digunakan tanpa MSO. Integrasi live MSO belum diverifikasi.
+
+[Kontrak portabilitas](docs/portability.md) · [Integrasi MSO](docs/integrations/mso.md) ·
+[Kepemilikan dan fork](docs/governance.md)
+
+Upstream yang ditetapkan: **rahmanef63/agent-ssot**. Dibuat oleh
+[Rahman](https://github.com/rahmanef63), dikelola bersama
+[Manef](https://github.com/official-manef). Fork dipakai untuk kontribusi yang diperlukan,
+bukan menggandakan sumber keputusan. Perubahan organisasi tidak dilakukan otomatis.

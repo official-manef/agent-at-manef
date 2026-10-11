@@ -6,7 +6,7 @@
 
 Define agents once. Audit existing setups. Reconcile drift. Back up curated knowledge. Move to another platform without rebuilding your operating context.
 
-[![CI](https://github.com/official-manef/agent-ssot/actions/workflows/ci.yml/badge.svg)](https://github.com/official-manef/agent-ssot/actions/workflows/ci.yml)
+[![CI](https://github.com/rahmanef63/agent-ssot/actions/workflows/ci.yml/badge.svg)](https://github.com/rahmanef63/agent-ssot/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Local first](https://img.shields.io/badge/local--first-no%20runtime%20dependencies-slateblue)](docs/architecture.md)
@@ -51,7 +51,7 @@ This is a **local-first context lifecycle toolkit**, not a hosted service, unive
 Requirements: **Python 3.10+**. Git is needed only to clone this toolkit. Core commands have no third-party runtime dependencies, make no network requests and never launch an AI runtime.
 
 ```sh
-git clone https://github.com/official-manef/agent-ssot.git
+git clone https://github.com/rahmanef63/agent-ssot.git
 cd agent-ssot
 
 # Preview first. No destination workspace is created.
@@ -74,6 +74,23 @@ On Windows, use `py -3` instead of `python` when appropriate; enter wrapped comm
 The starter creates a fictional `researcher`. Open `../my-codex-agents/agents/researcher/` in the destination runtime and read its generated `AGENTS.md`. Configure tools/accounts through that platform's private setup. **Rendering does not start or authenticate an agent.**
 
 > **Keep your context private.** This repository is public reusable tooling. Put personal/client context in a separate private workspace/repository. Do not add your agent files, credentials or backups to a public fork.
+
+## Model, harness and host independence
+
+The canonical format belongs to you, not to a model vendor, agent harness or VM provider.
+Core commands need Python 3.10+ and a writable local filesystem; they do not require a model,
+MCP server, cloud account, MSO installation, hosted service or active agent session.
+The adapters generate **different views of the same source**, not six different agent identities.
+
+```sh
+# Machine-readable declaration for MSO and other host integrations; no workspace required.
+python -m agent_ssot capabilities
+```
+
+Host independence is not a promise that every device, serverless platform or browser can run
+Python or a chosen agent harness. File portability, native registration, account access and
+model-task acceptance are tested separately. See [portability contract](docs/portability.md)
+and the [MSO consumer contract](docs/integrations/mso.md).
 
 ## Architecture
 
@@ -168,6 +185,7 @@ No adapter automatically installs a CLI, creates a hosted bot, activates hooks, 
 | Command | Purpose | Default |
 |---|---|---|
 | `init` / `new` | Create canonical workspace / agent | Preview |
+| `capabilities` | Declare interface/schema/adapter capabilities, without inspecting accounts | Read-only |
 | `doctor` | Validate canonical schema and detect selected unsafe content | Read-only |
 | `inventory` | Find known instruction files and identical-content candidates | Read-only |
 | `import` | Stage one selected text source for review | Preview |
@@ -187,6 +205,19 @@ These guards are **not** OS sandboxing, complete PII/secret detection, signed pr
 
 [Getting started](docs/getting-started.md) · [Architecture](docs/architecture.md) · [Agent specification](docs/agent-spec.md) · [Existing-agent migration](docs/migration.md) · [Reconciliation & cleanup](docs/maintenance.md) · [Backup & restore](docs/backup-restore.md) · [Platform matrix](docs/platforms.md) · [Credentials](docs/credentials.md) · [Acceptance checklist](docs/acceptance.md) · [CLI reference](docs/cli.md) · [Troubleshooting](docs/troubleshooting.md) · [Roadmap](docs/roadmap.md)
 
+## Canonical upstream and contribution forks
+
+The designated upstream is **[rahmanef63/agent-ssot](https://github.com/rahmanef63/agent-ssot)**.
+Issues, releases, documentation links and stars should refer to this one source. Manef is the
+maintenance/contribution identity; a fork is a working copy, not another product authority.
+Contributor branches return changes through upstream pull requests. Fork updates must preserve
+unique work and never use force-reset as a synchronization policy.
+
+Ownership changes must finish before a former upstream address is reused as a fork. See the
+[ownership and fork runbook](docs/governance.md), including acceptance and redirect checks.
+The project does not create an organization, synchronize account credentials or run an automatic
+fork-sync schedule.
+
 ## Development and contribution
 
 ```sh
@@ -199,4 +230,4 @@ Tests use synthetic fixtures. Core checks do not require paid model calls or rea
 
 **Version 0.1.0:** an initial, explicitly bounded implementation. Not affiliated with OpenAI, Anthropic, Google, Nous Research or xAI. Platform names belong to their respective owners.
 
-MIT licensed. Built by [Manef](https://github.com/official-manef).
+MIT licensed. Created by [Rahman](https://github.com/rahmanef63). Maintained with [Manef](https://github.com/official-manef).

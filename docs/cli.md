@@ -35,3 +35,15 @@ Platforms: `generic`, `codex`, `claude`, `gemini`, `hermes`, `grokbot`. A differ
 `restore --archive FILE.zip --target PATH [--apply]` validates before writing a new destination. Preview may use an internal temporary directory for schema verification, but does not modify the requested target. No native process starts.
 
 `--version` prints the toolkit version. For exact parser help, use `python -m agent_ssot COMMAND --help`.
+
+## Offline capability discovery
+
+```sh
+python -m agent_ssot capabilities
+```
+
+No arguments or workspace are needed. `kind`, `interface_version`, implementation version,
+canonical/backup schema versions, available commands, adapter output levels and safety limits
+are returned as JSON. This is a declaration, not a runtime health or authentication check.
+Hosts must reject unsupported interface/schema versions rather than guess compatibility.
+See [MSO consumer contract](integrations/mso.md).

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Add offline `capabilities` JSON for interface/schema/adapter discovery.
+- Define explicit model-, harness-, and host-independent contracts and MSO consumer boundaries.
+- Align designated upstream URLs and creator/maintainer attribution with the ownership plan.
+- Document transfer acceptance, fork synchronization without force, and one-way release authority.
+- Add source-relocation, adapter-isolation and installed-CLI contract tests.
+
+No model runtime, VM, provider login, MSO production integration, or scheduled fork sync is added.
+
 ## 0.1.0 — 2026-10-11
 
 Initial public source release. This version is available from GitHub; no package-registry publication is implied.

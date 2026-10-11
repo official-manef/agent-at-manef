@@ -17,3 +17,10 @@ Each needs a concrete scope, threat model, tests and honest platform evidence. A
 Centralizing every user's credentials, exporting provider-hidden instructions, automatic public sharing, copying entire browser/session stores, assuming one account equals one agent, bypassing approvals, silent bidirectional sync, or claiming that a single prompt makes every model behave identically.
 
 Quality is measured by fewer lost decisions, fewer conflicting agent identities, recoverable context and evidence-backed handovers—not by the number of bots or adapters listed.
+
+## Host adoption
+
+The offline capability declaration and MSO consumer design are available. Actual MSO UI/backend
+wiring, private-workspace mapping, account setup and production acceptance remain separate work.
+External adapter extension mechanisms may follow; arbitrary runtime IDs are not currently
+accepted by the fixed built-in adapter list. Unknown platforms use generic explicitly.

@@ -36,3 +36,11 @@ Canonical workspace JSON is deliberately small and strict. Text is UTF-8, bounde
 New directories are prepared in a private sibling staging directory before installation. Managed file replacement is atomic per file. A multi-file update is not a database transaction. Cooperative locks prevent this tool's competing writers; they do not stop other software or hostile same-user processes. After an interruption, inspect the output and history, then re-run a preview. Do not delete somebody else's lock automatically.
 
 `backup` exports canonical data only. `restore` checks paths, schema, count/size limits, entry types and checksums before creating a new destination. Encrypted/signature-verified backup transport and live native-state recovery belong to a separate process.
+
+## Host integration without a second core
+
+A host such as MSO consumes the versioned CLI contract and owns its user interface, permissions,
+job orchestration and operational state. It does not become the agent knowledge authority.
+Prefer a pinned package or source revision; do not copy this core into the host and evolve it
+independently. An existing private knowledge format needs a reviewed mapping, not an assumed
+schema match. See [portability](portability.md) and [integration contract](integrations/mso.md).
