@@ -25,3 +25,15 @@ Documentation should include usable commands, prerequisites, expected results an
 ## Review and conduct
 
 Submit a pull request with rationale, changes, test evidence and remaining gaps. Keep criticism specific to code and behavior. Do not share private reports, user profiles or personal information. Respectful collaboration and explicit consent are required. See [SECURITY.md](SECURITY.md) for sensitive reports.
+
+## Upstream and forks
+
+Send product issues, reviewed changes and releases to the designated upstream
+[rahmanef63/agent-at-manef](https://github.com/rahmanef63/agent-at-manef). Keep each fork's tracking main
+free of independent work; use feature branches and upstream PRs. Synchronization is explicit
+and must never discard unique commits. See [governance](docs/governance.md).
+
+Keep source credits accurate: repository ownership, maintenance responsibility and commit
+attribution are distinct. Do not rewrite historical authorship during transfers.
+
+Adapter changes require [conformance](docs/adapters.md); packaging requires the [release check](docs/release.md).

@@ -11,7 +11,7 @@ Do not erase an old setup to make room for the new one. First identify what exis
 Point `inventory` at a narrow directory owned by you:
 
 ```sh
-python -m agent_ssot inventory --source /path/to/existing-agent
+python -m agent_at_manef inventory --source /path/to/existing-agent
 ```
 
 It recognizes instruction filenames such as `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `SOUL.md`, `persona.md` and `SKILL.md`. It never opens `.env`, runtime config files or session stores for this scan. Output contains relative paths, bounded candidate hashes and byte-identical groups, not file content. Store inventory reports privately because filenames can themselves reveal information.
@@ -27,10 +27,10 @@ For each source classify: keep as canonical fact, update from authoritative evid
 ## 3. Stage selected source text
 
 ```sh
-python -m agent_ssot import --workspace ../my-agent-context \
+python -m agent_at_manef import --workspace ../my-agent-context \
   --source /path/to/existing-agent --file SOUL.md \
   --agent researcher --platform hermes
-python -m agent_ssot import --workspace ../my-agent-context \
+python -m agent_at_manef import --workspace ../my-agent-context \
   --source /path/to/existing-agent --file SOUL.md \
   --agent researcher --platform hermes --apply
 ```

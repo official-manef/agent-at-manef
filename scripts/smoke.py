@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def run(*args):
-    process = subprocess.run([sys.executable, '-m', 'agent_ssot', *map(str, args)], cwd=ROOT,
+    process = subprocess.run([sys.executable, '-m', 'agent_at_manef', *map(str, args)], cwd=ROOT,
                              capture_output=True, text=True, encoding='utf-8', timeout=30)
     if process.returncode:
         raise AssertionError('CLI smoke failed for ' + str(args[0]))
@@ -17,6 +17,12 @@ def run(*args):
     assert result['ok']
     return result
 
+
+declaration = run('capabilities')
+assert declaration['interface_version'] == 1 and declaration['declaration_only']
+assert declaration['readiness']['mso_integration_verified'] is False
+catalog_report = run('catalog', '--file', ROOT/'examples/catalog.json')
+assert catalog_report['installed'] is False and catalog_report['declaration_only']
 
 with tempfile.TemporaryDirectory() as folder:
     base = Path(folder).resolve()
@@ -42,5 +48,12 @@ with tempfile.TemporaryDirectory() as folder:
     run('backup', '--workspace', source, '--output', base/'backup.zip', '--apply')
     run('restore', '--archive', base/'backup.zip', '--target', base/'restored', '--apply')
     run('doctor', '--workspace', base/'restored')
+
+assessment_run = subprocess.run([sys.executable, '-m', 'agent_at_manef', 'assess',
+    '--requirements', 'examples/requirements.json', '--target-profile', 'examples/target-profile.json'],
+    cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=30)
+assert assessment_run.returncode == 2
+assert json.loads(assessment_run.stdout)['deployment_authorized'] is False
+
 print(json.dumps({'ok': True, 'actual_cli_commands': True, 'platforms': 6, 'backup_restore': True,
                   'credentials_used': False, 'native_runtime_executed': False}))
