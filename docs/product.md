@@ -4,6 +4,19 @@
 
 ## Positioning
 
+The MANEF owner accepted the ecosystem direction on 14 October 2026: a product studio
+serving developer, business, enterprise and agent consumers, with independent products,
+an open-submission marketplace target and optional common/cloud/commercial services.
+Agent@Manef keeps its focused local-first context lifecycle role within that wider
+ecosystem. A common identity must not imply access to private context or credentials.
+
+MANEF Web now has a source-backed initial inventory, human catalog and read-only agent
+discovery in its local implementation. The public site contribution is not a deployment
+claim. Additional Rahman/MANEF skills need actual owner, license, source/version,
+capability and review evidence; synthetic starter examples are not marketplace releases.
+Runtime execution, billing, network/account setup and operational cross-product
+integration continue to belong to their owning products.
+
 **One agent identity. Portable context. Deliberate migration.**
 
 Agent@Manef helps people define agents, review existing setups, reconcile drift and recover
@@ -15,7 +28,7 @@ Start with existing-agent cleanup and recoverable context rather than promising 
 for every chat app, VM host or orchestration service. MSO is a potential consumer, not a required
 host. The toolkit remains local-first with explicit writes and no model/network dependency.
 
-## Future manef.dev product card
+## MANEF website product card
 
 Status: **early developer toolkit**. Title: **Agent@Manef**.
 Description: **Define, organize and move your agents without rebuilding their context.**
@@ -26,8 +39,8 @@ recovery; six generated platform views; library and capability declarations.
 Use the current verified repository URL for a live card. Update to Rahman's canonical URL only
 after the same repository ID is verified there. Do not launch a dead product route or advertise
 unpublished packages. The card, landing deployment, analytics and runtime accounts are NOT
-published by this repository change. A future site contribution should use the site's existing
-product data model and pass its responsive/accessibility/link checks before deployment.
+published by this repository change. The local MANEF Web contribution uses the shared
+ecosystem data model and must pass responsive/accessibility/link checks before deployment.
 
 ## Library can mean two products
 

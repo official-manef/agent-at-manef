@@ -6,8 +6,15 @@ import zipfile
 from . import catalog, __version__, assessment, capabilities, core
 
 
+class RedactingParser(argparse.ArgumentParser):
+    def error(self, message):
+        # argparse normally echoes unknown options and invalid argument values.
+        self.exit(2, json.dumps({"ok": False,
+            "error": "Invalid arguments; use --help for command options. Raw arguments are not returned."}) + "\n")
+
+
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Agent@Manef — define, reconcile and move curated agent context.")
+    parser = RedactingParser(description="Agent@Manef — define, reconcile and move curated agent context.")
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("capabilities", help="Report offline interface/schema/adapter contracts, not runtime readiness")

@@ -24,7 +24,7 @@ STATE = ".agent-ssot-state.json"
 LOCK = ".agent-ssot.lock"
 IDENTITY_NAMES = {"AGENTS.md", "AGENT.md", "CLAUDE.md", "GEMINI.md", "SOUL.md", "persona.md", "context.md", "SKILL.md"}
 PRIVATE_DIRS = {".git", ".ssh", "node_modules", "__pycache__", "logs", "sessions", "cookies", "browser", "backups", ".venv", "venv", ".cache", "transcripts", "secrets", ".ssot-history"}
-RESERVED = {"con", "prn", "aux", "nul", "default"}
+RESERVED = {"con", "prn", "aux", "nul", "conin$", "conout$", "default"}
 SECRET_PATTERNS = (
     r"-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----",
     r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{30,}|sk-[A-Za-z0-9_-]{20,})\b",
@@ -67,14 +67,15 @@ def location(path):
 
 
 def relative(value):
-    if not isinstance(value, str) or not value or "\\" in value or ":" in value or any(ord(c) < 32 for c in value):
+    if (not isinstance(value, str) or not value
+            or any(c in '\\:<>"|?*' or ord(c) < 32 for c in value)):
         raise Refusal("Unsafe relative path")
     p = PurePosixPath(value)
     if p.is_absolute() or any(s in ("", ".", "..") for s in value.split("/")):
         raise Refusal("Unsafe relative path")
     for s in p.parts:
         stem = s.split(".")[0].casefold()
-        if s.endswith((" ", ".")) or stem in RESERVED or re.fullmatch(r"(?:com|lpt)[0-9]+", stem):
+        if s.endswith((" ", ".")) or stem in RESERVED or re.fullmatch(r"(?:com|lpt)[0-9¹²³]+", stem):
             raise Refusal("Nonportable filename")
     return p
 
@@ -118,7 +119,14 @@ def obj(data):
                 raise Refusal("Duplicate JSON key")
             result[key] = value
         return result
-    return json.loads(data, object_pairs_hook=unique)
+    try:
+        return json.loads(data, object_pairs_hook=unique)
+    except RecursionError as exc:
+        raise Refusal("JSON nesting exceeds parser limits") from exc
+
+
+def walk_error(error):
+    raise Refusal("Directory scan failed; context cannot be safely omitted") from error
 
 
 def excluded(name):
@@ -143,30 +151,48 @@ def portable(name):
     return False
 
 
+def path_tree(names):
+    """Refuse names that cannot represent the same file tree across supported hosts."""
+    tree = {}
+    for name in names:
+        parts = relative(name).parts
+        node = tree
+        for index, part in enumerate(parts):
+            is_file = index == len(parts) - 1
+            previous = node.get(part.casefold())
+            if previous is None:
+                children = {}
+                node[part.casefold()] = (part, is_file, children)
+            else:
+                original, was_file, children = previous
+                if original != part or was_file != is_file:
+                    raise Refusal("Case-insensitive path or file/directory collision")
+            node = children
+
+
 def bounded(files):
     if len(files) > MAX_FILES or sum(len(v) for v in files.values()) > MAX_TOTAL:
         raise Refusal("Context exceeds file-count or total-size limit")
-    seen = set()
-    for name, data in files.items():
-        relative(name)
-        if name.casefold() in seen:
-            raise Refusal("Case-insensitive filename collision")
-        seen.add(name.casefold())
+    path_tree(files)
+    for data in files.values():
         checked(data)
 
 
 def load_workspace(root):
     root = location(root)
     config = obj(read(root / "workspace.json"))
-    if not isinstance(config, dict) or config != {"schema_version": 1, "kind": "agent-ssot-workspace"}:
+    if (not isinstance(config, dict) or type(config.get("schema_version")) is not int
+            or config != {"schema_version": VERSION, "kind": "agent-ssot-workspace"}):
         raise Refusal("Unsupported workspace schema")
     files = {"workspace.json": json_bytes(config)}
     for base in ("agents", "policies", "decisions", "skills"):
         parent = root / base
+        no_links(parent)
         if not parent.exists():
             continue
-        no_links(parent)
-        for directory, dirs, names in os.walk(parent, followlinks=False):
+        if not parent.is_dir():
+            raise Refusal("Canonical folders must be directories")
+        for directory, dirs, names in os.walk(parent, followlinks=False, onerror=walk_error):
             for n in dirs + names:
                 no_links(Path(directory) / n)
             dirs[:] = [n for n in dirs if n.casefold() not in PRIVATE_DIRS]
@@ -185,7 +211,8 @@ def load_workspace(root):
         if not name.endswith("/agent.json"):
             continue
         a = obj(data)
-        if not isinstance(a, dict) or set(a) != required or a["schema_version"] != VERSION:
+        if (not isinstance(a, dict) or set(a) != required
+                or type(a["schema_version"]) is not int or a["schema_version"] != VERSION):
             raise Refusal("Unsupported agent schema")
         aid = slug(a["id"])
         if name != f"agents/{aid}/agent.json" or aid in agents:
@@ -280,10 +307,11 @@ def init(target, apply=False):
 
 
 def new_agent(workspace, aid, name, owner, mission, credentials=(), apply=False):
-    root, _, agents = load_workspace(workspace)
+    root, existing, agents = load_workspace(workspace)
     if slug(aid) in agents:
         raise Refusal("Agent already exists")
     files = agent_files(aid, name, owner, mission, credentials)
+    bounded({**existing, **files})
     # Validate the same schema that export and restore use.
     with tempfile.TemporaryDirectory() as temp:
         stage = Path(temp).resolve()
@@ -299,7 +327,7 @@ def inventory(source):
     if not source.is_dir():
         raise Refusal("Inventory source must be an existing directory")
     rows, groups = [], {}
-    for directory, dirs, names in os.walk(source, followlinks=False):
+    for directory, dirs, names in os.walk(source, followlinks=False, onerror=walk_error):
         for n in list(dirs):
             path = Path(directory) / n
             if n.casefold() in PRIVATE_DIRS or path.is_symlink() or getattr(path.lstat(), "st_file_attributes", 0) & 0x400:
@@ -344,7 +372,7 @@ def render_files(workspace, platform, selected=None):
     root, files, agents = load_workspace(workspace)
     if platform not in PLATFORMS:
         raise Refusal("Unsupported platform")
-    chosen = sorted(set(selected or agents))
+    chosen = sorted(set(agents if selected is None else selected))
     if not chosen or not set(chosen).issubset(agents):
         raise Refusal("Select existing agents")
     output = {}
@@ -389,8 +417,11 @@ def get_state(target):
     if not path.exists():
         return {"schema_version": VERSION, "kind": "agent-ssot-render", "files": {}}
     state = obj(read(path))
-    if not isinstance(state, dict) or state.get("schema_version") != VERSION or state.get("kind") != "agent-ssot-render" or not isinstance(state.get("files"), dict) or not state["files"]:
+    if (not isinstance(state, dict) or type(state.get("schema_version")) is not int
+            or state.get("schema_version") != VERSION or state.get("kind") != "agent-ssot-render"
+            or not isinstance(state.get("files"), dict) or not state["files"]):
         raise Refusal("Unknown or incomplete managed state")
+    path_tree(state["files"])
     for n, h in state["files"].items():
         relative(n)
         if not managed_name(n) or not isinstance(h, str) or not re.fullmatch("[a-f0-9]{64}", h):
@@ -514,6 +545,15 @@ def backup(workspace, output, apply=False):
             "encrypted": False, "credentials_included": False, "runtime_sessions_included": False, "unreviewed_inbox_included": False}
 
 
+def archive_entry(bundle, name):
+    try:
+        return bundle.read(name)
+    except Exception as exc:
+        # ZIP codecs expose different parser/decompression exceptions. Keep failures
+        # from this untrusted decoding boundary inside the same refusal contract.
+        raise Refusal("Unsupported or damaged archive data") from exc
+
+
 def restore(archive, target, apply=False):
     archive = location(archive)
     target = separate(target)
@@ -533,15 +573,20 @@ def restore(archive, target, apply=False):
                 raise Refusal("Unsupported archive entry")
             if i.filename != "bundle.json" and not portable(i.filename):
                 raise Refusal("Archive contains a nonportable/private path")
-        manifest = obj(z.read("bundle.json"))
-        if not isinstance(manifest, dict) or manifest.get("schema_version") != VERSION or manifest.get("kind") != "agent-ssot-context-backup" or not isinstance(manifest.get("files"), dict):
+        manifest = obj(archive_entry(z, "bundle.json"))
+        if (not isinstance(manifest, dict)
+                or set(manifest) != {"schema_version", "kind", "encrypted", "files"}
+                or type(manifest["schema_version"]) is not int or manifest["schema_version"] != VERSION
+                or manifest["kind"] != "agent-ssot-context-backup" or manifest["encrypted"] is not False
+                or not isinstance(manifest["files"], dict)):
             raise Refusal("Unsupported backup manifest")
         if set(manifest["files"]) != set(names) - {"bundle.json"}:
             raise Refusal("Archive and manifest disagree")
         files = {}
         for n, record in manifest["files"].items():
-            data = z.read(n)
-            if not isinstance(record, dict) or record != {"sha256": digest(data), "size": len(data)}:
+            data = archive_entry(z, n)
+            if (not isinstance(record, dict) or type(record.get("size")) is not int
+                    or record != {"sha256": digest(data), "size": len(data)}):
                 raise Refusal("Backup checksum mismatch")
             checked(data)
             files[n] = data

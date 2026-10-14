@@ -9,6 +9,9 @@
 
 ## Unreleased
 
+- Refuse empty render selections, aggregate-limit violations when adding agents, and unreadable or malformed canonical directories.
+- Validate portable directory/file trees, Windows filename restrictions, integer schema fields and v1 backup declarations before writes.
+- Redact CLI argument errors, refuse damaged ZIP codecs/deep JSON, and reject hardlinked public/private recovery key aliases.
 - Add offline `capabilities` JSON for interface/schema/adapter discovery.
 - Define explicit model-, harness-, and host-independent contracts and MSO consumer boundaries.
 - Align designated upstream URLs and creator/maintainer attribution with the ownership plan.

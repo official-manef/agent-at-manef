@@ -1,6 +1,6 @@
 # Destination acceptance
 
-[Platform guides](platforms.md) · [Receipt template](../templates/acceptance.md)
+[Platform guides](platforms.md) · [Receipt template](../templates/acceptance.md) · [Local lifecycle QA](qa.md)
 
 A migration is accepted when its required layers have evidence, not when a command returns zero. Do not mark a stage complete by copying a previous environment's receipt.
 

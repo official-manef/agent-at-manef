@@ -25,6 +25,10 @@ are preview-first; an authorized write requires the keyword argument `apply=True
 Boolean controls reject strings and integers. Inspection returns IDs, counts and a
 source fingerprint instead of the full source text.
 
+For `api.render`, `agents=None` selects every canonical agent. An explicit empty list
+is refused rather than expanding its scope. Pass a nonempty list of existing IDs to
+prepare a narrower view.
+
 The facade has one implementation, not a copied codebase. The documented API is version 1;
 consumers should pin a tested source revision until a reproducible release process exists.
 Legacy workspace/backup schema version 1 and managed-state filenames are unchanged.

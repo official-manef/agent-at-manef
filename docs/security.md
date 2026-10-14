@@ -14,7 +14,7 @@ A trusted owner-controlled machine, reviewed source code, private canonical data
 | Prompt injection in imported text | Candidates go to a non-active review inbox | Review source authority; runtime must not execute arbitrary instructions |
 | Overwriting existing work | Preview-first writes, managed hashes, conflict refusal | Coordinate writers; do not edit output to change canonical identity |
 | Destructive cleanup | Only unchanged obsolete managed output can be quarantined | Review native profiles separately; retain recovery copies |
-| Path traversal/symlink escape | Relative-path validation, symlink/reparse refusal and archive entry checks | Host access control; hostile concurrent same-user writes are out of scope |
+| Path traversal/symlink escape | Relative-path validation, portable directory/file trees, symlink/reparse refusal and archive entry checks | Host access control; hostile concurrent same-user writes are out of scope |
 | ZIP expansion/malformed bundle | Size/count limits, strict schema, digest and entry validation | Trusted acquisition, encryption/signature tooling |
 | Cross-agent context exposure | Per-agent source selection plus explicitly shared folders | Scope shared files and enforce actual OS/account boundaries |
 | False success claims | Separate context-file integrity from runtime/account/model acceptance | Run destination acceptance and record evidence |
@@ -35,4 +35,4 @@ Cooperative operation locks do not protect against all races or hostile processe
 
 ## Optional external security tools
 
-The canonical core still has no runtime-launch or key-loading path. The separately invoked [secure transport module](secure-transfer.md) calls reviewed local age/minisign binaries with fixed arguments and explicit execution. It is not automatic signing, organizational authorization, a replacement for encrypted disks, or a claim of safe execution of signed instructions.
+The canonical core still has no runtime-launch or key-loading path. The separately invoked [secure transport module](secure-transfer.md) calls reviewed local age/minisign binaries with fixed arguments and explicit execution. The sender's public trust key and the recipient's private identity must be distinct files, including distinct filesystem identities; hardlinked aliases are refused before reading trust-key bytes. It is not automatic signing, organizational authorization, a replacement for encrypted disks, or a claim of safe execution of signed instructions.

@@ -17,7 +17,7 @@ A portable context backup preserves what another platform can reasonably underst
 | Agent Markdown charter/context | Native session databases and raw logs/transcripts |
 | Shared Markdown policies/decisions/skills | Generated output, local history and unreviewed inbox |
 
-Every included file must pass the canonical schema/path/size rules and selected credential-pattern scanning. Unexpected files in canonical folders cause refusal instead of being silently forgotten. Put runtime/private files outside canonical directories; do not remove your only secret copy just to make a backup pass.
+Every included file must pass the canonical schema/path/size rules and selected credential-pattern scanning. Unexpected files in canonical folders cause refusal instead of being silently forgotten. Canonical folder paths must be directories, and an unreadable directory stops validation and backup rather than producing an incomplete archive. Put runtime/private files outside canonical directories; do not remove your only secret copy just to make a backup pass.
 
 ## Create a backup
 
@@ -40,7 +40,11 @@ python -m agent_at_manef doctor --workspace ../recovered-context
 python -m agent_at_manef render --workspace ../recovered-context --platform hermes --target ../hermes-view --apply
 ```
 
-Restoration validates the manifest, complete canonical schema, checksums, unique case-insensitive filenames, relative paths, entry types and extraction limits before creating the requested destination. Symlinks, traversal, encrypted ZIP entries and unsupported schemas are refused. The destination must be new, never your active home/profile.
+Restoration validates the manifest, complete canonical schema, checksums, unique case-insensitive paths, relative paths, entry types and extraction limits before creating the requested destination. Collisions between directory names or between files and directories are refused, including `skills/Guides/first.md` with `skills/guides/second.md`. Windows device names and invalid filename characters are refused on every host. Symlinks, traversal, encrypted ZIP entries, unsupported schemas and damaged compression are refused. The destination must be new, never your active home/profile.
+
+Schema versions and byte lengths must be JSON integers; booleans and floating-point
+lookalikes are refused. The v1 backup manifest declares `encrypted: false`; encrypted
+delivery uses the separate secure transport wrapper.
 
 Limits: 1 MiB per text file, 512 canonical files and 32 MiB total canonical data. Larger workspaces need deliberate segmentation or a reviewed future format; there is no unsafe override.
 

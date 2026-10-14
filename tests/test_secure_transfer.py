@@ -122,6 +122,18 @@ class SecureTransferTests(unittest.TestCase):
         self.fake_bundle()
         with self.assertRaises(core.Refusal):secure.restore(self.bundle,self.bundle/"nested",self.key,self.identity)
 
+    def test_hardlinked_identity_and_trust_key_refused_before_snapshot(self):
+        self.fake_bundle()
+        self.key.unlink()
+        try:
+            os.link(self.identity, self.key)
+        except (OSError, NotImplementedError):
+            self.skipTest("Hardlinks unavailable")
+        self.assertTrue(self.key.samefile(self.identity))
+        with patch.object(secure, "_snapshot", side_effect=AssertionError("Do not read private identity as public key")):
+            with self.assertRaises(core.Refusal):
+                secure.restore(self.bundle, self.base / "target", self.key, self.identity)
+
     @unittest.skipIf(os.name=="nt","POSIX modes are not Windows ACLs")
     def test_shared_private_key_permissions_refused(self):
         self.fake_bundle();self.identity.chmod(0o644)
@@ -164,6 +176,48 @@ class SecureTransferTests(unittest.TestCase):
         self.assertEqual(result,1)
         self.assertNotIn("private-canary",stream.getvalue())
         self.assertFalse(json.loads(stream.getvalue())["ok"])
+
+    def test_cli_parse_errors_do_not_echo_input(self):
+        arguments = (
+            ["private-canary"],
+            ["verify", "--bundle", str(self.bundle), "--trusted-key", str(self.key), "--private-canary"],
+        )
+        for argv in arguments:
+            with self.subTest(argv=argv[0]):
+                stream = io.StringIO()
+                with redirect_stderr(stream), patch.object(secure, "_snapshot", side_effect=AssertionError("No files read")):
+                    with self.assertRaises(SystemExit) as caught:
+                        secure.main(argv)
+                self.assertEqual(caught.exception.code, 2)
+                self.assertFalse(json.loads(stream.getvalue())["ok"])
+                self.assertNotIn("private-canary", stream.getvalue())
+
+    def test_cli_help_keeps_successful_exit_and_command_usage(self):
+        for argv in (["--help"], ["restore", "--help"]):
+            with self.subTest(argv=argv):
+                stream = io.StringIO()
+                with redirect_stdout(stream):
+                    with self.assertRaises(SystemExit) as caught:
+                        secure.main(argv)
+                self.assertEqual(caught.exception.code, 0)
+                self.assertIn("usage:", stream.getvalue())
+                self.assertIn("--help", stream.getvalue())
+
+    def test_cli_unsupported_zip_compression_is_redacted(self):
+        with zipfile.ZipFile(self.archive, "w") as archive:
+            archive.writestr("bundle.json", "{}")
+        data = bytearray(self.archive.read_bytes())
+        local = data.index(b"PK\x03\x04")
+        central = data.index(b"PK\x01\x02")
+        data[local + 8:local + 10] = (99).to_bytes(2, "little")
+        data[central + 10:central + 12] = (99).to_bytes(2, "little")
+        self.archive.write_bytes(data)
+        stream = io.StringIO()
+        with redirect_stderr(stream), patch.object(secure, "_run", side_effect=AssertionError("No tools run")):
+            result = secure.main(["encrypt", "--archive", str(self.archive), "--bundle", str(self.bundle), "--recipient", RECIPIENT])
+        self.assertEqual(result, 1)
+        self.assertFalse(json.loads(stream.getvalue())["ok"])
+        self.assertFalse(self.bundle.exists())
 
     def test_cli_preview_json(self):
         stream=io.StringIO()

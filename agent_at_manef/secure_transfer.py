@@ -26,6 +26,12 @@ MAX_KEY = 16384
 TIMEOUT = 45
 
 
+class _RedactingArgumentParser(argparse.ArgumentParser):
+    def error(self, message):
+        # argparse's default diagnostics echo raw paths, key-like tokens and values.
+        self.exit(2, json.dumps({"ok": False, "error": "Invalid arguments; use --help for command options. Raw arguments are not returned."}) + "\n")
+
+
 def _flag(value):
     if type(value) is not bool:
         raise core.Refusal("Execution requires an explicit boolean")
@@ -179,7 +185,7 @@ def restore(bundle, target, trusted_key, identity, *, age_binary=None, minisign_
     for path in (key, identity):
         _outside(path, source)
         _outside(path, target)
-    if key == identity:
+    if key.samefile(identity):
         raise core.Refusal("Signing trust key and age private identity must be distinct")
     # Inspect mode/size only. Secret bytes are read only by the explicitly invoked age tool.
     if os.name != "nt" and stat.S_IMODE(identity.stat().st_mode) & 0o077:
@@ -208,7 +214,7 @@ def restore(bundle, target, trusted_key, identity, *, age_binary=None, minisign_
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = _RedactingArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     enc = sub.add_parser("encrypt", help="Preview/encrypt an existing v1 context ZIP; signing remains separate")
     enc.add_argument("--archive", required=True)
@@ -242,7 +248,7 @@ def main(argv=None):
                 expected_sha256=args.expected_sha256, apply=args.apply)
         print(json.dumps(result, ensure_ascii=True, indent=2))
         return 0
-    except (core.Refusal, OSError, ValueError, TypeError, KeyError, zipfile.BadZipFile):
+    except (core.Refusal, OSError, ValueError, TypeError, KeyError, zipfile.BadZipFile, NotImplementedError):
         print(json.dumps({"ok": False, "error": "Secure transfer refused. Inspect trust, tools, permissions, archive and paths locally; no raw content returned."}), file=sys.stderr)
         return 1
 

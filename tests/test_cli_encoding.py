@@ -9,6 +9,18 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 class CliEncodingTests(unittest.TestCase):
+    def test_malformed_arguments_are_redacted_for_both_aliases(self):
+        canary = 'synthetic-private-canary'
+        for module in ('agent_at_manef', 'agent_ssot'):
+            for arguments in ([canary], ['capabilities', '--' + canary]):
+                with self.subTest(module=module, arguments=arguments):
+                    process = subprocess.run([sys.executable, '-m', module, *arguments],
+                                             cwd=ROOT, capture_output=True, timeout=20)
+                    self.assertEqual(process.returncode, 2)
+                    self.assertEqual(process.stdout, b'')
+                    self.assertNotIn(canary.encode(), process.stderr)
+                    self.assertFalse(json.loads(process.stderr)['ok'])
+
     def check_encoding(self, encoding):
         env = dict(os.environ, PYTHONIOENCODING=encoding)
         expected = json.loads((ROOT / "examples/catalog.json").read_text(encoding="utf-8"))["entries"][0]["title"]

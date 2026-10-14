@@ -1,18 +1,18 @@
 # CLI reference
 
-Run from the source checkout with `python -m agent_at_manef`. Optional local installation provides `agent-ssot`. All commands return JSON; success exits 0, a validation/conflict failure exits 1, and argparse usage errors exit 2. Error output intentionally avoids raw input/credential values.
+Run from the source checkout with `python -m agent_at_manef`. Optional local installation provides `agent-ssot`. Commands return JSON; success exits 0, a validation/conflict failure exits 1, and argument errors exit 2. Errors, including invalid commands and unknown options, return redacted JSON on stderr. Use `--help` for readable usage text; `--version` prints the version.
 
 ## Workspace and agents
 
 `init --target PATH [--apply]` prepares the fictional researcher starter. The destination must be new.
 
-`new --workspace PATH --id SLUG --name NAME --owner OWNER --mission TEXT [--credential-name NAME ...] [--apply]` adds a new canonical agent. Existing identities are refused. Credential requirements are names only.
+`new --workspace PATH --id SLUG --name NAME --owner OWNER --mission TEXT [--credential-name NAME ...] [--apply]` adds a new canonical agent. Existing identities are refused. The combined existing and proposed context must fit workspace file-count and size limits before preview or apply succeeds. Credential requirements are names only.
 
 `doctor --workspace PATH` validates workspace/agent schema, canonical path rules, required charters/context and selected text patterns. No live accounts or external links are checked.
 
 ## Existing sources
 
-`inventory --source PATH` discovers known instruction filenames without opening private config/session stores. Byte-identical groups are review candidates, not automatic identity merges. Narrow the source if the 512-candidate limit is reached.
+`inventory --source PATH` discovers known instruction filenames without opening private config/session stores. An unreadable directory refuses the scan instead of reporting an empty or incomplete success. Byte-identical groups are review candidates, not automatic identity merges. Narrow the source if the 512-candidate limit is reached.
 
 `import --workspace PATH --source PATH --file RELATIVE_FILE --agent ID [--platform PLATFORM] [--apply]` stages one explicit Markdown/text file into the review inbox. It never promotes or modifies the original. Duplicate deterministic import destinations are refused rather than overwritten.
 
