@@ -19,8 +19,8 @@ agent-at-manef = "agent_at_manef.__main__:main"
 agent-ssot = "agent_ssot.__main__:main"
 
 [project.urls]
-Repository = "https://github.com/rahmanef63/agent-at-manef"
-Issues = "https://github.com/rahmanef63/agent-at-manef/issues"
+Repository = "https://github.com/official-manef/agent-at-manef"
+Issues = "https://github.com/official-manef/agent-at-manef/issues"
 
 [tool.setuptools]
 include-package-data = false

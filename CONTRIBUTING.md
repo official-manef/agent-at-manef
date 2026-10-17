@@ -28,8 +28,10 @@ Submit a pull request with rationale, changes, test evidence and remaining gaps.
 
 ## Upstream and forks
 
-Send product issues, reviewed changes and releases to the designated upstream
-[rahmanef63/agent-at-manef](https://github.com/rahmanef63/agent-at-manef). Keep each fork's tracking main
+The designated upstream is `rahmanef63/agent-at-manef`, pending transfer acceptance.
+Until that destination resolves to repository ID `1414110928`, submit review branches
+and PRs to the current [official-manef/agent-at-manef](https://github.com/official-manef/agent-at-manef).
+Do not publish releases or treat the transfer as complete from this instruction alone. Keep each fork's tracking main
 free of independent work; use feature branches and upstream PRs. Synchronization is explicit
 and must never discard unique commits. See [governance](docs/governance.md).
 
