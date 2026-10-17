@@ -21,7 +21,7 @@ Ini bukan server AI, layanan sinkronisasi otomatis, atau jaminan bahwa semua mod
 Butuh Python 3.10+; tidak ada dependency runtime pihak ketiga.
 
 ```sh
-git clone https://github.com/rahmanef63/agent-at-manef.git
+git clone https://github.com/official-manef/agent-at-manef.git
 cd agent-at-manef
 python -m agent_at_manef init --target ../konteks-agent
 python -m agent_at_manef init --target ../konteks-agent --apply
@@ -77,7 +77,7 @@ Agent@Manef tetap dapat digunakan tanpa MSO. Integrasi live MSO belum diverifika
 [Kontrak portabilitas](docs/portability.md) · [Integrasi MSO](docs/integrations/mso.md) ·
 [Kepemilikan dan fork](docs/governance.md)
 
-Upstream yang ditetapkan: **rahmanef63/agent-ssot**. Dibuat oleh
+Upstream yang ditetapkan: **rahmanef63/agent-at-manef**. Dibuat oleh
 [Rahman](https://github.com/rahmanef63), dikelola bersama
 [Manef](https://github.com/official-manef). Fork dipakai untuk kontribusi yang diperlukan,
 bukan menggandakan sumber keputusan. Perubahan organisasi tidak dilakukan otomatis.
@@ -117,3 +117,12 @@ ZIP konteks standar tetap tanpa enkripsi/signature. Modul opsional
 pengirim tepercaya sebelum dekripsi serta restore v1. Signing tetap di terminal privat pengirim;
 tidak ada key di repo. Program eksternal hanya berjalan dengan apply/execute eksplisit.
 Pengujian kriptografi nyata terpisah dari core yang tidak memerlukan model atau harness.
+
+
+## Status alamat repository
+
+Tujuan upstream tetap `rahmanef63/agent-at-manef`, menunggu penerimaan transfer.
+Pada pemeriksaan 17 Oktober 2026, repository dengan ID `1414110928` masih berada
+di [official-manef/agent-at-manef](https://github.com/official-manef/agent-at-manef).
+Gunakan sumber tersebut untuk CI dan PR review sampai ID yang sama terverifikasi
+di tujuan; penggantian nama bukan bukti bahwa transfer pemilik sudah selesai.

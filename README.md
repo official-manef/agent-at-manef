@@ -6,7 +6,7 @@
 
 Define agents once. Audit existing setups. Reconcile drift. Back up curated knowledge. Move to another platform without rebuilding your operating context.
 
-[![CI](https://github.com/rahmanef63/agent-at-manef/actions/workflows/ci.yml/badge.svg)](https://github.com/rahmanef63/agent-at-manef/actions/workflows/ci.yml)
+[![CI](https://github.com/official-manef/agent-at-manef/actions/workflows/ci.yml/badge.svg)](https://github.com/official-manef/agent-at-manef/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Local first](https://img.shields.io/badge/local--first-no%20runtime%20dependencies-slateblue)](docs/architecture.md)
@@ -69,7 +69,7 @@ This is a **local-first context lifecycle toolkit**, not a hosted service, unive
 Requirements: **Python 3.10+**. Git is needed only to clone this toolkit. Core commands have no third-party runtime dependencies, make no network requests and never launch an AI runtime.
 
 ```sh
-git clone https://github.com/rahmanef63/agent-at-manef.git
+git clone https://github.com/official-manef/agent-at-manef.git
 cd agent-at-manef
 
 # Preview first. No destination workspace is created.
@@ -225,8 +225,10 @@ These guards are **not** OS sandboxing, complete PII/secret detection, signed pr
 
 ## Canonical upstream and contribution forks
 
-The designated upstream is **[rahmanef63/agent-ssot](https://github.com/rahmanef63/agent-at-manef)**.
-Issues, releases, documentation links and stars should refer to this one source. Manef is the
+The designated upstream is **`rahmanef63/agent-at-manef`**, pending transfer acceptance.
+Until the same stable repository ID is verified there, clone and review links,
+package metadata and the CI badge use the current `official-manef/agent-at-manef` source.
+After acceptance, issues, releases, documentation links and stars should refer to the upstream. Manef is the
 maintenance/contribution identity; a fork is a working copy, not another product authority.
 Contributor branches return changes through upstream pull requests. Fork updates must preserve
 unique work and never use force-reset as a synchronization policy.

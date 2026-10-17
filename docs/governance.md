@@ -4,7 +4,7 @@
 
 ## Designated roles
 
-The designated public upstream is **rahmanef63/agent-ssot**, created by Rahman and maintained
+The designated public upstream is **rahmanef63/agent-at-manef**, created by Rahman and maintained
 with Manef. Repository ownership, product maintenance and commit authorship are separate.
 An ownership change does not rewrite previous contributors or change the MIT license.
 
@@ -38,7 +38,7 @@ transfer, collaborator grant, fork, or synchronization occurred.
 
 GitHub normally redirects the old address after a transfer. Creating a repository or fork at
 that address removes the redirect. First update official URLs and verify ownership. Only then
-reuse `official-manef/agent-ssot` as a contribution fork of the new upstream, if the address is
+reuse `official-manef/agent-at-manef` as a contribution fork of the new upstream, if the address is
 available. Do not create a copy under the destination to bypass pending acceptance.
 
 When a fork is created, verify its `fork` flag and `parent`/`source` metadata point to the
@@ -48,11 +48,11 @@ workspace belongs in this public fork network.
 ## Safe fork workflow
 
 ```text
-rahmanef63/agent-ssot:main          official source and release authority
+rahmanef63/agent-at-manef:main          official source and release authority
              |
              | explicit upstream sync, no force
              v
-official-manef/agent-ssot:main      tracking branch only
+official-manef/agent-at-manef:main      tracking branch only
              |
              +-- work/topic       reviewed change -> upstream PR
 ```
@@ -61,7 +61,7 @@ Before sync, inspect ahead/behind state and any feature branches. Keep unique wo
 branch; stop when ancestry or ownership is uncertain. For a verified fork, GitHub offers:
 
 ```sh
-gh repo sync official-manef/agent-ssot --branch main
+gh repo sync official-manef/agent-at-manef --branch main
 ```
 
 This example assumes the transfer and real fork have already been verified. Do not use `--force`.
@@ -91,3 +91,13 @@ A rename is not transfer acceptance. Re-read the stable repository ID to resolve
 owner/name, verify pending transfer state, and do not restart or cancel a transfer speculatively.
 Update an acceptance-dependent URL only after the destination exists. Future organization
 creation remains deferred. Existing licenses and historical commit authors remain unchanged.
+
+
+## Routing check — 17 October 2026
+
+The GitHub source read still resolves repository ID `1414110928` under
+`official-manef/agent-at-manef`. The designated `rahmanef63/agent-at-manef`
+destination returned 404 through the same connection; that does not establish
+acceptance. Keep the CI badge and review handoff on the reachable current source
+until the same stable ID is verified at the destination. Do not restart, cancel,
+or replace the pending transfer. No repository ownership changed in this review.
