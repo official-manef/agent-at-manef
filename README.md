@@ -277,3 +277,34 @@ The default context ZIP is still unsigned and unencrypted. The opt-in
 pinned sender signature before decryption and v1 restore. Signing stays in the sender's
 private terminal; no keys enter this repo. External tools run only with explicit apply/execute.
 Actual-tool recovery is tested separately from the model/harness-independent core.
+
+---
+
+## Catatan pemeliharaan (17 Oktober 2026)
+
+This appendix records repository navigation and validation boundaries; the workflows above remain the starting point for using the toolkit.
+
+### Repository map
+
+- `agent_at_manef/` and `agent_ssot/` contain the two compatible Python namespaces and their command-line entry points.
+- `docs/` contains workflow and contract details. See [getting started](docs/getting-started.md), [CLI reference](docs/cli.md), [architecture](docs/architecture.md), [security limits](docs/security.md), and [maintenance guidance](docs/maintenance.md).
+- `examples/` contains sample catalog, requirements, and target-profile JSON files. `templates/` contains documentation and agent starter templates.
+- `tests/` contains the test suite; `scripts/` contains documentation, release, recovery, and smoke-check utilities.
+
+### Local validation
+
+From the repository root, run the checks documented for contributors:
+
+```sh
+python -m unittest discover -s tests -v
+python scripts/check_docs.py
+python scripts/smoke.py
+```
+
+These commands are validation steps, not evidence that a particular checkout has passed them. A passing local check would not establish platform login, account authorization, model behavior, or destination-runtime acceptance; those require separate evidence as described in [acceptance](docs/acceptance.md).
+
+### Scope and project status
+
+The package metadata requires Python 3.10 or newer and declares no runtime dependencies. It defines the `agent-at-manef` and compatibility `agent-ssot` command-line entry points. The metadata version is `0.2.0rc2`; that does not imply a published package release.
+
+The repository describes the designated upstream as `rahmanef63/agent-at-manef`, while the README’s governance note says the ownership transfer was awaiting acceptance at its last verified read. Do not represent that transfer as completed without new verification.
