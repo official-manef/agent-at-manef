@@ -7,9 +7,10 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from agent_ssot import core
 from agent_at_manef.runtime import Runtime, scaffold
+from agent_at_manef.runtime import executor
 from agent_at_manef.runtime.ai import generate_candidate, register_candidate
 from agent_at_manef.runtime.registry import Registry
 
@@ -130,6 +131,15 @@ class RuntimeTests(unittest.TestCase):
         self.replace_code('def run(args):\n    print("x" * 200000)\n    return {}\n')
         self.manifest(lambda d: d['actions'][0].update(timeout_seconds=5))
         self.assertEqual(Runtime(self.bundle).dispatch(self.request, execute=True)['status'], 'output-limit')
+
+    @unittest.skipUnless(os.name == 'posix', 'POSIX group signal fallback')
+    def test_refused_group_signal_still_kills_and_reaps_owned_child(self):
+        process = Mock(pid=12345)
+        process.poll.return_value = None
+        with patch.object(executor.os, 'killpg', side_effect=PermissionError('synthetic refusal')):
+            executor._stop(process)
+        process.kill.assert_called_once_with()
+        process.wait.assert_called_once_with(timeout=5)
 
     def test_changed_code_is_refused_before_process_launch(self):
         runtime = Runtime(self.bundle)

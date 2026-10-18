@@ -17,14 +17,19 @@ MAX_OUTPUT = 65536
 
 
 def _stop(process):
-    if os.name == 'posix':
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-    elif process.poll() is None:
-        process.kill()
-    process.wait(timeout=5)
+    try:
+        if os.name == 'posix':
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except OSError:
+                # Some hosts refuse a group signal while a resource-limited child
+                # exits. Always fall back to the owned child and reap its handle.
+                if process.poll() is None:
+                    process.kill()
+        elif process.poll() is None:
+            process.kill()
+    finally:
+        process.wait(timeout=5)
 
 
 def run(source, args, timeout):
