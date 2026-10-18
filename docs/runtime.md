@@ -150,8 +150,10 @@ Only execute reviewed, trusted code on an owner-controlled host. A fresh Python
 process uses `-I -S`, a private staging working directory, no shell, closed stdin,
 an allowlisted operational environment, a deadline and bounded stdout/stderr/results.
 Parent provider keys, PYTHONPATH and interpreter startup hooks are not inherited.
-POSIX process groups are killed on completion/interruption/timeout; Windows guarantees
-termination of the direct child only. POSIX file-size limits supplement output checks;
+POSIX group termination is attempted on completion/interruption/timeout. If the host
+refuses a group signal, cleanup falls back to killing and reaping the owned child;
+background descendants require host isolation. Windows terminates the direct child
+only. POSIX file-size limits supplement output checks;
 other systems use process/output monitoring. Temporary files are removed normally,
 not securely erased. There is no persistent kernel or hidden state shared across tasks.
 
