@@ -1,0 +1,28 @@
+"""Private child entrypoint. Only the selected, hash-checked source is staged here."""
+import json
+from pathlib import Path
+import runpy
+import sys
+
+limit = int(sys.argv[1])
+try:
+    import resource
+except ImportError:
+    resource = None
+if resource is not None:
+    resource.setrlimit(resource.RLIMIT_FSIZE, (limit + 1, limit + 1))
+try:
+    args = json.loads(Path('input.json').read_text(encoding='utf-8'))
+    namespace = runpy.run_path('action.py', run_name='agent_action')
+    result = namespace['run'](args)
+    data = json.dumps(result, ensure_ascii=True, allow_nan=False).encode('ascii')
+    if len(data) > limit:
+        sys.exit(72)
+    Path('result.json').write_bytes(data)
+except OSError as exc:
+    # EFBIG from a resource-limited stdout/result file is a bounded-output failure.
+    sys.exit(72 if exc.errno == 27 else 71)
+except SystemExit:
+    raise
+except BaseException:
+    sys.exit(71)

@@ -7,3 +7,5 @@ recursive-include scripts *.py
 recursive-include tests *.py *.json
 recursive-exclude * __pycache__ *.py[cod]
 global-exclude .env .env.* *.env *.pem *.key
+recursive-include agent_ssot/templates *.md
+recursive-include agent_at_manef/runtime/templates *.txt

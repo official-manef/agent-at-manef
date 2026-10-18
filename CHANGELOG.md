@@ -9,6 +9,14 @@
 
 ## Unreleased
 
+- Add a separate preview-first deterministic command runtime with a hash-pinned action registry,
+  exact priority/condition routing, one optional host planner fallback and bounded trusted Python execution.
+- Stage host-generated Python as inactive candidates; register reviewed source explicitly without execution.
+- Package the actual charter template, add immutable reusable workspace snapshots, and separate generated-view
+  budgets from canonical/backup limits. Existing default adapter bytes and v1 context archives remain compatible.
+- Add runtime failure/permission/integrity tests, installed-action recovery checks and synthetic latency measurements.
+
+
 - Refuse empty render selections, aggregate-limit violations when adding agents, and unreadable or malformed canonical directories.
 - Validate portable directory/file trees, Windows filename restrictions, integer schema fields and v1 backup declarations before writes.
 - Redact CLI argument errors, refuse damaged ZIP codecs/deep JSON, and reject hardlinked public/private recovery key aliases.

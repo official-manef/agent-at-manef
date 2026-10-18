@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from dataclasses import dataclass
+from importlib import resources
 import hashlib
 import json
 import os
@@ -10,6 +12,8 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
+from string import Template
+from types import MappingProxyType
 import tempfile
 import uuid
 import zipfile
@@ -20,6 +24,8 @@ PLATFORMS = adapters.PLATFORMS
 MAX_FILE = 1_048_576
 MAX_TOTAL = 32 * MAX_FILE
 MAX_FILES = 512
+MAX_RENDER_FILES = 4096
+MAX_RENDER_TOTAL = 64 * MAX_FILE
 STATE = ".agent-ssot-state.json"
 LOCK = ".agent-ssot.lock"
 IDENTITY_NAMES = {"AGENTS.md", "AGENT.md", "CLAUDE.md", "GEMINI.md", "SOUL.md", "persona.md", "context.md", "SKILL.md"}
@@ -170,8 +176,10 @@ def path_tree(names):
             node = children
 
 
-def bounded(files):
-    if len(files) > MAX_FILES or sum(len(v) for v in files.values()) > MAX_TOTAL:
+def bounded(files, *, rendered=False):
+    count_limit = MAX_RENDER_FILES if rendered else MAX_FILES
+    size_limit = MAX_RENDER_TOTAL if rendered else MAX_TOTAL
+    if len(files) > count_limit or sum(len(v) for v in files.values()) > size_limit:
         raise Refusal("Context exceeds file-count or total-size limit")
     path_tree(files)
     for data in files.values():
@@ -185,6 +193,7 @@ def load_workspace(root):
             or config != {"schema_version": VERSION, "kind": "agent-ssot-workspace"}):
         raise Refusal("Unsupported workspace schema")
     files = {"workspace.json": json_bytes(config)}
+    total_bytes = len(files["workspace.json"])
     for base in ("agents", "policies", "decisions", "skills"):
         parent = root / base
         no_links(parent)
@@ -195,14 +204,15 @@ def load_workspace(root):
         for directory, dirs, names in os.walk(parent, followlinks=False, onerror=walk_error):
             for n in dirs + names:
                 no_links(Path(directory) / n)
-            dirs[:] = [n for n in dirs if n.casefold() not in PRIVATE_DIRS]
-            for n in names:
+            dirs[:] = sorted(n for n in dirs if n.casefold() not in PRIVATE_DIRS)
+            for n in sorted(names):
                 path = Path(directory) / n
                 name = path.relative_to(root).as_posix()
                 if not portable(name):
                     raise Refusal("Unexpected file in canonical context; move private/runtime files outside it")
                 files[name] = read(path)
-                if len(files) > MAX_FILES or sum(len(d) for d in files.values()) > MAX_TOTAL:
+                total_bytes += len(files[name])
+                if len(files) > MAX_FILES or total_bytes > MAX_TOTAL:
                     raise Refusal("Canonical workspace exceeds portable limits")
     bounded(files)
     agents = {}
@@ -291,10 +301,8 @@ def agent_files(aid, name, owner, mission, credentials=()):
     aid = slug(aid)
     descriptor = {"schema_version": VERSION, "id": aid, "name": name, "owner": owner, "mission": mission, "credential_names": list(credentials)}
     checked(json_bytes(descriptor))
-    charter = (f"# {name}\n\n{mission}\n\n## Accountability\n\nOwner: {owner}. One task, one accountable owner.\n"
-               "\n## Responsibilities\n\nWork only on the current authorized task; cite sources and verify results.\n"
-               "\n## Non-goals\n\nNo credential sharing, publication, spending or deployment without task-specific authority.\n"
-               "\n## Acceptance\n\nReport evidence, unresolved facts and the next bounded action.\n")
+    template = resources.files("agent_ssot").joinpath("templates/AGENT.md").read_text(encoding="utf-8")
+    charter = Template(template).substitute(name=name, owner=owner, mission=mission)
     return {f"agents/{aid}/agent.json": json_bytes(descriptor), f"agents/{aid}/AGENT.md": charter.encode(),
             f"agents/{aid}/context.md": b"# Project context\n\nRecord purpose, scope, stakeholders, architecture, dated decisions, evidence, backlog, risks and handover here. Unknown facts remain unknown.\n"}
 
@@ -368,8 +376,26 @@ def import_context(workspace, source, filename, aid, platform="generic", apply=F
     return fresh(root / "inbox" / ("import-" + ident), files, apply)
 
 
-def render_files(workspace, platform, selected=None):
+@dataclass(frozen=True)
+class WorkspaceSnapshot:
+    """Explicit immutable validated revision. Refresh with snapshot(), never silently."""
+    root: Path
+    files: object
+    agents: object
+
+
+def snapshot(workspace):
     root, files, agents = load_workspace(workspace)
+    frozen_agents = {aid: MappingProxyType({**a, "credential_names": tuple(a["credential_names"])})
+                     for aid, a in agents.items()}
+    return WorkspaceSnapshot(root, MappingProxyType(files), MappingProxyType(frozen_agents))
+
+
+def render_files(workspace, platform, selected=None):
+    if isinstance(workspace, WorkspaceSnapshot):
+        root, files, agents = workspace.root, workspace.files, workspace.agents
+    else:
+        root, files, agents = load_workspace(workspace)
     if platform not in PLATFORMS:
         raise Refusal("Unsupported platform")
     chosen = sorted(set(agents if selected is None else selected))
@@ -392,7 +418,7 @@ def render_files(workspace, platform, selected=None):
         output.update(adapters.render(platform, view))
         output[prefix + "SETUP.md"] = ("# Destination acceptance\n\nUse " + platform + "'s documented native setup to load this context. This is NOT an automatic Bot/API import or a started process.\nVerify account identity, tool scope, cited context readback, one bounded task and a fresh-session check.\nDo not restore tokens, cookies, live sessions, executable hooks or old model IDs from another platform.\n").encode()
     output["START-HERE.md"] = ("# Generated Agent SSOT workspace\n\nOpen the selected agents/<id>/ folder and read AGENTS.md.\nCanonical context is authoritative; do not edit generated files to change the agent.\nAccounts, model behavior and runtime state remain separate.\n").encode()
-    bounded(output)
+    bounded(output, rendered=True)
     metadata = {"platform": platform, "agents": chosen, "source_fingerprint": digest(json_bytes({n: digest(d) for n, d in sorted(files.items())}))}
     return root, output, metadata
 
@@ -421,6 +447,8 @@ def get_state(target):
             or state.get("schema_version") != VERSION or state.get("kind") != "agent-ssot-render"
             or not isinstance(state.get("files"), dict) or not state["files"]):
         raise Refusal("Unknown or incomplete managed state")
+    if len(state["files"]) > MAX_RENDER_FILES:
+        raise Refusal("Managed view exceeds file-count limit")
     path_tree(state["files"])
     for n, h in state["files"].items():
         relative(n)
@@ -454,7 +482,7 @@ def reconcile(workspace, target, platform, selected=None, apply=False, quarantin
     def plan():
         state = get_state(target)
         actions, before = {}, {}
-        for name in set(state["files"]) | set(files):
+        for name in sorted(set(state["files"]) | set(files)):
             path = target / relative(name)
             no_links(path)
             for parent in path.parents:
@@ -479,6 +507,11 @@ def reconcile(workspace, target, platform, selected=None, apply=False, quarantin
         return state, actions, before
 
     state, actions, before = plan()
+    planned_hashes = {n: digest(d) for n, d in files.items()}
+    planned_hashes.update({n: state["files"][n] for n, a in actions.items() if a == "stale" and not quarantine})
+    if len(planned_hashes) > MAX_RENDER_FILES:
+        raise Refusal("Managed view exceeds file-count limit")
+    checked(json_bytes({"schema_version": VERSION, "kind": "agent-ssot-render", "files": planned_hashes, **metadata}))
     report = {"ok": "conflict" not in actions.values(), "mode": "apply" if apply else "preview", "actions": dict(sorted(actions.items())),
               "platform": platform, "agents": metadata["agents"], "quarantine_requested": quarantine, "runtime_started": False}
     if not apply:

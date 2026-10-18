@@ -69,3 +69,18 @@ review or install authority. See [catalog](catalog.md) and [release gates](relea
 ## Optional secure transport module
 
 `agent_at_manef.secure_transfer` provides preview-first `encrypt`, `verify` and `restore` wrappers for external age/minisign tools. It is not loaded by the default facade. Read the [security and trust contract](secure-transfer.md) before using its explicit execution flags. Default backup/restore and legacy aliases stay unchanged.
+
+## Reuse a validated context snapshot
+
+`api.prepare_workspace(path)` validates once and returns an immutable in-memory revision.
+Pass that snapshot as `api.render(snapshot, target, platform)` for repeated selected-agent
+renders without rereading peer context. Edits on disk are observed only after calling
+`prepare_workspace` again. Path-based calls retain full fresh validation. Snapshots hold
+private context in memory; do not log or publish their contents.
+
+The actual charter generator template is [packaged with the library](../agent_ssot/templates/AGENT.md).
+Source and installed-wheel generation use this same file. Existing v1 default output bytes
+are preserved. Generated views have separate limits of 4096 files and 64 MiB, with managed
+state still bounded to 1 MiB. Canonical/backup limits remain 512 files and 32 MiB.
+Shared copies remain self-contained per agent. [Optional runtime](runtime.md) uses its own
+bundle schema and explicit module; importing this facade does not load its executor.

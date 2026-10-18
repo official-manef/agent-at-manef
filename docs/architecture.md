@@ -44,3 +44,12 @@ job orchestration and operational state. It does not become the agent knowledge 
 Prefer a pinned package or source revision; do not copy this core into the host and evolve it
 independently. An existing private knowledge format needs a reviewed mapping, not an assumed
 schema match. See [portability](portability.md) and [integration contract](integrations/mso.md).
+
+## Explicit optional execution
+
+The [runtime module](runtime.md) consumes a separate bounded action manifest, never the
+Markdown context loader. An immutable command index selects a reviewed action; unmatched
+requests can use one host-provided planner. The executor checks the same argument/policy
+contract on both paths and stages the selected hash-checked bytes in a fresh Python child.
+Generation, review/registration and execution are distinct explicit operations. No provider
+client, automatic hook, native profile mutation or scheduler is added to canonical operations.

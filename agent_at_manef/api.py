@@ -10,4 +10,5 @@ backup = implementation.backup
 restore = implementation.restore
 verify = implementation.verify
 inspect_catalog = implementation.inspect_catalog
-__all__ = ["API_VERSION", "capabilities", "assess", "inspect_workspace", "render", "backup", "restore", "verify", "inspect_catalog"]
+prepare_workspace = implementation.prepare_workspace
+__all__ = ["API_VERSION", "capabilities", "assess", "inspect_workspace", "render", "backup", "restore", "verify", "inspect_catalog", "prepare_workspace"]

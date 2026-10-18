@@ -112,9 +112,14 @@ def check(dist):
 from pathlib import Path
 import agent_at_manef, agent_ssot
 from agent_at_manef import api
+from agent_at_manef.runtime import Runtime, scaffold
 from agent_ssot import core
 with tempfile.TemporaryDirectory() as td:
     root = Path(td).resolve(); source = root / "canonical"
+    bundle = root / "runtime"
+    scaffold(bundle, apply=True)
+    result = Runtime(bundle).dispatch({"command": "echo", "args": {"text": "installed"}}, execute=True)
+    assert result["result"] == {"text": "installed"} and result["ai_calls"] == 0
     core.init(source, True)
     target = root / "view"
     assert api.render(source, target, "generic")["ok"] and not target.exists()

@@ -1,0 +1,5 @@
+"""A deterministic synthetic action. No provider or external service is required."""
+
+
+def run(args):
+    return {'text': args['text']}
