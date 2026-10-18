@@ -264,7 +264,7 @@ python scripts/smoke.py
 
 Tests use synthetic fixtures. Core checks do not require paid model calls or real credentials. CI covers Linux, macOS and Windows; the badge above reflects actual workflow status. See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and [CHANGELOG.md](CHANGELOG.md) for versioned scope.
 
-**Version 0.1.0:** an initial, explicitly bounded implementation. Not affiliated with OpenAI, Anthropic, Google, Nous Research or xAI. Platform names belong to their respective owners.
+**Current source candidate: `0.2.0rc2`**, as declared in `pyproject.toml`. The initial `0.1.0` source release remains documented in [CHANGELOG.md](CHANGELOG.md); no package-registry publication is implied. Not affiliated with OpenAI, Anthropic, Google, Nous Research or xAI. Platform names belong to their respective owners.
 
 MIT licensed. Created by [Rahman](https://github.com/rahmanef63). Maintained with [Manef](https://github.com/official-manef).
 
@@ -279,14 +279,17 @@ not establish authorization or a successful live test. [Assessment contract](doc
 Read the [ecosystem review](docs/research.md) for patterns from personal agents, open harnesses,
 SDKs and model providers. Researched products are not automatically supported adapters.
 
-## Candidate 0.2.0rc1
+## Current source candidate: 0.2.0rc2
 
 [Release checks](docs/release.md) · [Adapter conformance](docs/adapters.md) · [Catalog metadata](docs/catalog.md)
 
-This candidate adds a reviewed static adapter registry and read-only catalog validation.
+The current candidate combines the reviewed static adapter registry and read-only catalog
+validation introduced in `0.2.0rc1` with the optional encrypted recovery added in `0.2.0rc2`.
 CI builds wheel/sdist, checks offline installation, rebuilds the source archive and exercises
 recovery. These are candidate artifacts, not a registry release, hosted catalog, native runtime
-login or live MSO integration. Legacy schema and CLI aliases remain supported.
+login or live MSO integration. Legacy schema and CLI aliases remain supported. Features listed
+under **Unreleased** in [CHANGELOG.md](CHANGELOG.md) describe additional source work, not a
+published candidate release.
 
 ## Optional encrypted recovery
 

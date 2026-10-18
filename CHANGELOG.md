@@ -9,6 +9,9 @@
 
 ## Unreleased
 
+- Enforce an explicit 64-container JSON nesting limit independently of Python parser recursion behavior; cover Python 3.14 in CI.
+- Align English and Indonesian candidate documentation with package metadata `0.2.0rc2`.
+
 - Add a separate preview-first deterministic command runtime with a hash-pinned action registry,
   exact priority/condition routing, one optional host planner fallback and bounded trusted Python execution.
 - Stage host-generated Python as inactive candidates; register reviewed source explicitly without execution.

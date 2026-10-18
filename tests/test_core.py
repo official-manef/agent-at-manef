@@ -485,6 +485,15 @@ class ContextTests(unittest.TestCase):
         with self.assertRaises(core.Refusal):
             core.obj('[' * 10000 + '0' + ']' * 10000)
 
+    def test_json_depth_limit_is_explicit_and_preserves_string_values(self):
+        for open_value, close_value in (("[", "]"), ('{"nested":', "}")):
+            with self.subTest(kind=open_value):
+                data = open_value * core.MAX_JSON_DEPTH + '"[{}]"' + close_value * core.MAX_JSON_DEPTH
+                self.assertIsNotNone(core.obj(data))
+                with self.assertRaises(core.Refusal):
+                    core.obj(open_value + data + close_value)
+        self.assertEqual(core.obj(b'{"text":"[{}]"}'), {"text": "[{}]"})
+
     def test_symlink_source_and_target_refused(self):
         alias = self.base/'alias'
         try: alias.symlink_to(self.workspace, target_is_directory=True)

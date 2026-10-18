@@ -24,6 +24,7 @@ PLATFORMS = adapters.PLATFORMS
 MAX_FILE = 1_048_576
 MAX_TOTAL = 32 * MAX_FILE
 MAX_FILES = 512
+MAX_JSON_DEPTH = 64
 MAX_RENDER_FILES = 4096
 MAX_RENDER_TOTAL = 64 * MAX_FILE
 STATE = ".agent-ssot-state.json"
@@ -126,7 +127,16 @@ def obj(data):
             result[key] = value
         return result
     try:
-        return json.loads(data, object_pairs_hook=unique)
+        value = json.loads(data, object_pairs_hook=unique)
+        pending = [(value, 1)]
+        while pending:
+            item, depth = pending.pop()
+            if isinstance(item, (dict, list)):
+                if depth > MAX_JSON_DEPTH:
+                    raise Refusal("JSON nesting exceeds the supported limit")
+                children = item.values() if isinstance(item, dict) else item
+                pending.extend((child, depth + 1) for child in children)
+        return value
     except RecursionError as exc:
         raise Refusal("JSON nesting exceeds parser limits") from exc
 

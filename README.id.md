@@ -102,13 +102,17 @@ Kita mengambil pola yang berguna, bukan menyalin semua produk. Lisensi open-sour
 source-available, model open-weight dan layanan hosted harus dibedakan. Integrasi manef.dev
 dan library terdistribusi masih tahap berikutnya, bukan sudah live dari perubahan dokumentasi.
 
-## Kandidat 0.2.0rc1
+## Kandidat source saat ini: 0.2.0rc2
 
 [Pemeriksaan rilis](docs/release.md) · [Kontrak adapter](docs/adapters.md) · [Metadata katalog](docs/catalog.md)
 
-Adapter memakai satu registry yang direview. Katalog memvalidasi metadata lokal tanpa mengunduh
-atau memasang agent. CI membangun wheel/sdist serta menguji instalasi offline dan pemulihan.
-Ini artefak kandidat, bukan rilis registry, katalog hosted atau integrasi runtime live.
+Metadata `pyproject.toml` menetapkan kandidat `0.2.0rc2`. Kandidat ini menggabungkan registry
+adapter yang direview dan validasi katalog lokal dari `0.2.0rc1` dengan pemulihan terenkripsi
+opsional dari `0.2.0rc2`. Katalog tidak mengunduh atau memasang agent. CI membangun wheel/sdist
+serta menguji instalasi offline dan pemulihan. Ini artefak kandidat, bukan rilis registry,
+katalog hosted atau integrasi runtime live. Bagian **Unreleased** di
+[CHANGELOG.md](CHANGELOG.md) mencatat pekerjaan source tambahan, bukan rilis kandidat yang
+sudah dipublikasikan. Rilis source awal `0.1.0` tetap dicatat di changelog.
 
 ## Pemulihan terenkripsi opsional
 
