@@ -93,6 +93,22 @@ The starter creates a fictional `researcher`. Open `../my-codex-agents/agents/re
 
 > **Keep your context private.** This repository is public reusable tooling. Put personal/client context in a separate private workspace/repository. Do not add your agent files, credentials or backups to a public fork.
 
+## Optional deterministic-first actions
+
+The separate [local runtime](docs/runtime.md) now scaffolds reviewed Python actions,
+routes known commands without AI, and supports one host-supplied planner callback only
+for unmatched requests. It validates plans and source hashes before explicit execution.
+Generated Python is staged for review and registered separately; subsequent calls reuse
+that action without inference. There is no bundled provider client or OS sandbox.
+
+```sh
+python -m agent_at_manef.runtime scaffold --target ../my-runtime --apply
+python -m agent_at_manef.runtime run --bundle ../my-runtime --request '{"command":"echo","args":{"text":"hello"}}' --execute
+```
+
+Keep runtime bundles outside canonical context workspaces. Canonical/backup v1 remain
+context-only. See [runtime contracts, generation and measurement](docs/runtime.md).
+
 ## Model, harness and host independence
 
 The canonical format belongs to you, not to a model vendor, agent harness or VM provider.

@@ -126,3 +126,21 @@ Pada pemeriksaan 17 Oktober 2026, repository dengan ID `1414110928` masih berada
 di [official-manef/agent-at-manef](https://github.com/official-manef/agent-at-manef).
 Gunakan sumber tersebut untuk CI dan PR review sampai ID yang sama terverifikasi
 di tujuan; penggantian nama bukan bukti bahwa transfer pemilik sudah selesai.
+
+## Runtime deterministik opsional
+
+Modul [runtime lokal](docs/runtime.md) membuat bundle action Python terpisah. Command
+yang cocok langsung menjalankan action tanpa AI. Input yang belum punya rute dapat
+memakai satu callback planner dari host; hasilnya tetap diperiksa terhadap schema,
+izin action dan hash kode. Tidak ada request provider atau login otomatis di library.
+
+```sh
+python -m agent_at_manef.runtime scaffold --target ../runtime-saya --apply
+python -m agent_at_manef.runtime run --bundle ../runtime-saya --request '{"command":"echo","args":{"text":"halo"}}' --execute
+```
+
+Tanpa `--execute`, perintah run hanya preview. Python hasil generator masuk candidate;
+aktivasi memerlukan review dan registrasi eksplisit. Action yang sudah terdaftar dipakai
+ulang tanpa inferensi. Runner memakai proses baru, environment terbatas dan timeout,
+namun bukan sandbox OS untuk kode tidak tepercaya. Bundle runtime disimpan terpisah dari
+workspace/backup konteks v1. API planner/generator dan benchmark ada di panduan runtime.

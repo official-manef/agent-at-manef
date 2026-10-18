@@ -39,4 +39,4 @@ Keep proposed, user-decided, source-observed and unknown facts distinct. A previ
 
 Use `credential_names` only for verified variable requirements of the selected client. OAuth-managed services may require none. The generated `env.example` is blank and never loaded by the toolkit. Store values in the destination's private provider store or approved secret manager.
 
-Model routing, tools, channels, schedules, session databases and native IDs are runtime configuration, not this canonical schema. They require separate setup and acceptance. See [credentials](credentials.md).
+Model routing, tools, channels, schedules, session databases and native IDs are runtime configuration, not this canonical schema. The optional [local action runtime](runtime.md) has a separate versioned manifest. They require separate setup and acceptance. See [credentials](credentials.md).

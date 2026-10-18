@@ -27,3 +27,7 @@ include-package-data = false
 
 [tool.setuptools.packages.find]
 include = ["agent_ssot*", "agent_at_manef*"]
+
+[tool.setuptools.package-data]
+agent_ssot = ["templates/*.md"]
+"agent_at_manef.runtime" = ["templates/*.txt"]

@@ -8,8 +8,8 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def run(*args):
-    process = subprocess.run([sys.executable, '-m', 'agent_at_manef', *map(str, args)], cwd=ROOT,
+def run(*args, module='agent_at_manef'):
+    process = subprocess.run([sys.executable, '-m', module, *map(str, args)], cwd=ROOT,
                              capture_output=True, text=True, encoding='utf-8', timeout=30)
     if process.returncode:
         raise AssertionError('CLI smoke failed for ' + str(args[0]))
@@ -26,6 +26,13 @@ assert catalog_report['installed'] is False and catalog_report['declaration_only
 
 with tempfile.TemporaryDirectory() as folder:
     base = Path(folder).resolve()
+    bundle = base/'runtime'
+    run('scaffold', '--target', bundle, module='agent_at_manef.runtime')
+    assert not bundle.exists()
+    run('scaffold', '--target', bundle, '--apply', module='agent_at_manef.runtime')
+    executed = run('run', '--bundle', bundle, '--request', '{"command":"echo","args":{"text":"synthetic"}}',
+                   '--execute', module='agent_at_manef.runtime')
+    assert executed['result'] == {'text': 'synthetic'} and executed['ai_calls'] == 0
     source = base/'context'
     run('init', '--target', source)
     assert not source.exists()
@@ -56,4 +63,4 @@ assert assessment_run.returncode == 2
 assert json.loads(assessment_run.stdout)['deployment_authorized'] is False
 
 print(json.dumps({'ok': True, 'actual_cli_commands': True, 'platforms': 6, 'backup_restore': True,
-                  'credentials_used': False, 'native_runtime_executed': False}))
+                  'credentials_used': False, 'native_runtime_executed': False, 'local_python_action_executed': True}))

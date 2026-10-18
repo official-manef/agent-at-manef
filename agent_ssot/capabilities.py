@@ -49,6 +49,8 @@ def describe():
             "max_file_bytes": core.MAX_FILE,
             "max_total_bytes": core.MAX_TOTAL,
             "max_files": core.MAX_FILES,
+            "max_render_files": core.MAX_RENDER_FILES,
+            "max_render_bytes": core.MAX_RENDER_TOTAL,
             "canonical_encoding": "utf-8",
             "backup_encrypted": False,
             "backup_signed": False,
@@ -62,6 +64,13 @@ def describe():
             "private_key_read_by_external_age_only": True, "native_runtime_started": False,
             "real_tool_acceptance": "Linux CI; other OS integration not certified",
         }],
+        "optional_runtime": {
+            "module": "agent_at_manef.runtime", "schema_version": 1,
+            "default_mode": "preview", "execution_flag": "--execute",
+            "deterministic_command_routing": True, "planner": "host-supplied callback, unmatched only",
+            "provider_requests_in_library": False, "automatic_candidate_activation": False,
+            "os_sandbox": False,
+        },
         "readiness": {
             "destination_inspected": False,
             "provider_authenticated": False,

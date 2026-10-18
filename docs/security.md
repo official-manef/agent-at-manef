@@ -4,7 +4,7 @@
 
 ## Intended environment
 
-A trusted owner-controlled machine, reviewed source code, private canonical data and deliberate user actions. This is not an untrusted multi-tenant service. The tool has no network client or runtime-launch path, but the agent that later reads generated files may have powerful tools.
+A trusted owner-controlled machine, reviewed source code, private canonical data and deliberate user actions. This is not an untrusted multi-tenant service. The canonical core has no network client or runtime-launch path. The separately invoked local action runtime executes explicitly selected, reviewed Python; agents that later read generated context may also have powerful tools.
 
 ## Threats and mitigations
 
@@ -36,3 +36,15 @@ Cooperative operation locks do not protect against all races or hostile processe
 ## Optional external security tools
 
 The canonical core still has no runtime-launch or key-loading path. The separately invoked [secure transport module](secure-transfer.md) calls reviewed local age/minisign binaries with fixed arguments and explicit execution. The sender's public trust key and the recipient's private identity must be distinct files, including distinct filesystem identities; hardlinked aliases are refused before reading trust-key bytes. It is not automatic signing, organizational authorization, a replacement for encrypted disks, or a claim of safe execution of signed instructions.
+
+## Optional local action runtime
+
+The [runtime](runtime.md) uses exact routing, explicit execution, reviewed manifest/source
+hashes, argument checks, policy-eligible planner metadata and a fresh child environment.
+Generated code is staged as inactive data. There are no provider requests or automatic
+candidate activation. A hash authenticates neither the author nor the declared effects.
+The runner is process hygiene, not a sandbox: trusted Python can access same-user host
+files, networking and process APIs. Use host-enforced isolation for untrusted code.
+Declared write policy does not intercept filesystem/network system calls. Windows child
+process-tree isolation and cross-platform memory limits are not supplied. Planner/model
+credentials, deadlines and token budgets remain the embedding host's responsibility.

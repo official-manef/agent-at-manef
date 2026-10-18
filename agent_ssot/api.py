@@ -22,7 +22,7 @@ def inspect_workspace(workspace: str | Path) -> dict:
             "credential_values_returned": False, "runtime_verified": False}
 
 
-def render(workspace: str | Path, target: str | Path, platform: str, *,
+def render(workspace: str | Path | core.WorkspaceSnapshot, target: str | Path, platform: str, *,
            agents: list[str] | None = None, apply: bool = False, quarantine_stale: bool = False) -> dict:
     if type(apply) is not bool or type(quarantine_stale) is not bool:
         raise core.Refusal("Apply and quarantine must be explicit booleans")
@@ -47,3 +47,8 @@ def verify(target: str | Path) -> dict:
 
 def inspect_catalog(path: str | Path) -> dict:
     return catalog.inspect_file(path)
+
+
+def prepare_workspace(workspace: str | Path) -> core.WorkspaceSnapshot:
+    """Validate once for repeated renders; explicit refresh observes later changes."""
+    return core.snapshot(workspace)
